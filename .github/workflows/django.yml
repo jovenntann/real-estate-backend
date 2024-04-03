@@ -1,8 +1,6 @@
 name: Django CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -67,39 +65,3 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
-
-  create_pull_request:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.ACTION_TOKEN }}
-          commit-message: "Automated PR"
-          title: "Automated PR"
-          body: "Please review the changes"
-          branch: "automated-pr-branch"
-
-  auto_approve:
-    needs: create_pull_request
-    if: github.event.pull_request.state == 'open'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Auto approve
-        uses: hmarr/auto-approve-action@v2.0.0
-        with:
-          github-token: "${{ secrets.ACTION_TOKEN }}"
-
-  auto_merge:
-    needs: auto_approve
-    if: github.event.pull_request.state == 'approved'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Merge pull request
-        uses: pascalgn/automerge-action@v0.14.2
-        with:
-          GITHUB_TOKEN: "${{ secrets.ACTION_TOKEN }}"
-          MERGE_LABELS: "auto-merge"
-          MERGE_METHOD: "squash"
