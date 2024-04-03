@@ -12,6 +12,22 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+# Library: django-environ
+import environ
+
+# Library: djangorestframework-simplejwt
+import datetime
+
+# Logging
+import logging
+
+# Logging
+logger = logging.getLogger(__name__)
+
+# Library: django-environ
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-izb5+$$76l0kjrn6)i+$_5^mh6=j#u^(v2)+0hamstw$-(%!ha'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,8 +91,12 @@ WSGI_APPLICATION = 'tappy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('DJANGO_DB_ENGINE'),
+        'NAME': os.environ.get('DJANGO_DB_NAME'),
+        'USER': os.environ.get('DJANGO_DB_USER'),
+        'PASSWORD': os.environ.get('DJANGO_DB_PASS'),
+        'HOST': os.environ.get('DJANGO_DB_HOST'),
+        'PORT': os.environ.get('DJANGO_DB_PORT')
     }
 }
 
