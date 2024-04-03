@@ -49,18 +49,11 @@ class TestServiceGenderDeleteGender(TestCase):
 
 class TestServiceGenderCreateGender(TestCase):
 
-    def test_create_gender(self):
-        """Should be able to create a gender"""
-        gender = create_gender('test_gender')
-        self.assertEqual('test_gender', gender.gender)
-
-class TestServiceGenderCreateGender(TestCase):
-
     def test_create_gender_already_exist(self):
         """Should not be able to create a gender that already exists"""
-        create_gender('test_gender')
+        create_gender('female')
         with self.assertRaises(Exception):
-            create_gender('test_gender')
+            create_gender('female')
 
 
 class TestServiceGenderUpdateGender(TestCase):
