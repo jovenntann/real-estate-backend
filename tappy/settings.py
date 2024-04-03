@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     # Library: drf-yasg
     'drf_yasg',
     # Domain Apps
+    'domain.common',
     'domain.user',
 ]
 
