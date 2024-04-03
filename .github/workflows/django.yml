@@ -76,7 +76,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACTION_TOKEN }}
           commit-message: "Automated PR"
           title: "Automated PR"
           body: "Please review the changes"
@@ -90,7 +90,7 @@ jobs:
       - name: Auto approve
         uses: hmarr/auto-approve-action@v2.0.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: "${{ secrets.ACTION_TOKEN }}"
 
   auto_merge:
     needs: auto_approve
@@ -100,6 +100,6 @@ jobs:
       - name: Merge pull request
         uses: pascalgn/automerge-action@v0.14.2
         with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.ACTION_TOKEN }}"
           MERGE_LABELS: "auto-merge"
           MERGE_METHOD: "squash"
