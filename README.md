@@ -25,6 +25,7 @@ Here are some instructions for running unit tests:
    Use the following command to run the unit tests using coverage:
    ```
    coverage run manage.py test
+   docker exec -it real-estate-backend_django_1 coverage run manage.py test
    ```
 
 ### Adding verbosity (level 2 is recommended):
