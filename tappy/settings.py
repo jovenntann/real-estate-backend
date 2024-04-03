@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'rest_framework',
     # Library: drf-yasg
     'drf_yasg',
+    # Domain Apps
+    'domain.user',
 ]
 
 MIDDLEWARE = [
@@ -218,3 +220,6 @@ SWAGGER_SETTINGS = {
     }
 }
 FORCE_SCRIPT_NAME = '/'
+
+# Django: abstract-user
+AUTH_USER_MODEL = "domain_user.User"
