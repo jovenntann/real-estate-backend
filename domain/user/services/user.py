@@ -25,7 +25,7 @@ def get_user_by_id(user_id: int) -> User:
 def get_user_by_email(email: str) -> User:
     user = User.objects.filter(email=email).first()
     logger.info(f"{user} fetched by email")
-    return user
+    return None
 
 
 def delete_user(user: User) -> User:
