@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def get_users() -> List[User]:
     users = User.objects.all().order_by('id')
     logger.info(f"{users} fetched")
-    return None
+    return users
 
 
 def get_user_by_id(user_id: int) -> User:
