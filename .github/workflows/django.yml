@@ -15,6 +15,17 @@ jobs:
       matrix:
         python-version: [3.12]
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: django
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -25,6 +36,18 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Setup Environment Variables
+      run: |
+        echo "DJANGO_DB_ENGINE=django.db.backends.postgresql_psycopg2" >> $GITHUB_ENV
+        echo "DJANGO_DB_NAME=django" >> $GITHUB_ENV
+        echo "DJANGO_DB_USER=postgres" >> $GITHUB_ENV
+        echo "DJANGO_DB_HOST=postgres" >> $GITHUB_ENV
+        echo "DJANGO_DB_PASS=postgres" >> $GITHUB_ENV
+        echo "DJANGO_DB_PORT=5432" >> $GITHUB_ENV
+    - name: Setup Database
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
     - name: Run Tests
       run: |
         python manage.py test
