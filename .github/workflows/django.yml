@@ -38,6 +38,15 @@ jobs:
         pip install -r requirements.txt
     - name: Setup Environment Variables
       run: |
+        echo "DJANGO_SECRET_KEY=django_secret" >> $GITHUB_ENV
+        echo "DJANGO_DEBUG=True" >> $GITHUB_ENV
+        echo "DJANGO_SECRET_KEY=django-insecure-izb5+$$76l0kjrn6)i+$_5^mh6=j#u^(v2)+0hamstw$-(%!ha" >> $GITHUB_ENV
+        echo "DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0" >> $GITHUB_ENV
+        echo "DJANGO_API_URL=http://localhost:8000/" >> $GITHUB_ENV
+        echo "CSRF_TRUSTED_ORIGINS=http://localhost:8000" >> $GITHUB_ENV
+        echo "CORS_ALLOWED_ORIGINS=http://localhost:8000" >> $GITHUB_ENV
+        echo "S3_BUCKET_URL=''" >> $GITHUB_ENV
+
         echo "DJANGO_DB_ENGINE=django.db.backends.postgresql_psycopg2" >> $GITHUB_ENV
         echo "DJANGO_DB_NAME=django" >> $GITHUB_ENV
         echo "DJANGO_DB_USER=postgres" >> $GITHUB_ENV
