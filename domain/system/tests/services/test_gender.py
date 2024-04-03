@@ -10,7 +10,7 @@ from domain.system.models.Gender import Gender
 
 
 def create_test_gender() -> Gender:
-    gender = Gender.objects.create(gender="test_gender")
+    gender = Gender.objects.create(gender="female")
     return gender
 
 
@@ -61,5 +61,5 @@ class TestServiceGenderUpdateGender(TestCase):
     def test_update_gender(self):
         """Should be able to update a gender"""
         gender = create_test_gender()
-        updated_gender = update_gender(gender, 'updated_gender')
-        self.assertEqual('updated_gender', updated_gender.gender)
+        updated_gender = update_gender(gender, 'male')
+        self.assertEqual('male', updated_gender.gender)
