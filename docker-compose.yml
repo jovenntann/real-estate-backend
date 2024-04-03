@@ -4,7 +4,6 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-      - ./backups:/backups
     environment:
       - POSTGRES_DB=django
       - POSTGRES_USER=postgres
