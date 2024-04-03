@@ -54,7 +54,7 @@ jobs:
         echo "DJANGO_DB_ENGINE=django.db.backends.postgresql_psycopg2" >> $GITHUB_ENV
         echo "DJANGO_DB_NAME=django" >> $GITHUB_ENV
         echo "DJANGO_DB_USER=postgres" >> $GITHUB_ENV
-        echo "DJANGO_DB_HOST=postgres" >> $GITHUB_ENV
+        echo "DJANGO_DB_HOST=localhost" >> $GITHUB_ENV
         echo "DJANGO_DB_PASS=postgres" >> $GITHUB_ENV
         echo "DJANGO_DB_PORT=5432" >> $GITHUB_ENV
     - name: Setup Database
