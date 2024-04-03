@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     # Domain Apps
     'domain.common',
     'domain.user',
+    'domain.system',
 ]
 
 MIDDLEWARE = [
