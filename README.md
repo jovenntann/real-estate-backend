@@ -45,6 +45,7 @@ Here are some instructions for running unit tests:
    Use the following commands to generate the coverage report:
    ```
    coverage html
+   docker exec -it real-estate-backend_django_1 coverage html
 
    or
 
