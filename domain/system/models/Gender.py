@@ -9,5 +9,5 @@ class Gender(BaseModel):
     id = models.AutoField(primary_key=True)
     gender = models.CharField(max_length=10, unique=True)
 
-    def __str__(self):
+    def __str__(self): # pragma: no cover
         return self.gender

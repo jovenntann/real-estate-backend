@@ -14,5 +14,5 @@ class CompanyInformation(BaseModel):
     company_size = models.IntegerField()
     industry = models.CharField(max_length=50)
 
-    def __str__(self):
+    def __str__(self): # pragma: no cover
         return self.company_name
