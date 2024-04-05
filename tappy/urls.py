@@ -49,5 +49,6 @@ urlpatterns = [
     # Healt-check
     path('health-check', health_check_view),
     # API Route
+    path('authentication/', include('api.authentication.urls')),
     path('agent/', include('api.agent.urls')),
 ]
