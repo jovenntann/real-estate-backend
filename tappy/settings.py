@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Library: djangorestframework
     'rest_framework',
+    # Library: django-cors-headers
+    'corsheaders',
     # Library: drf-yasg
     'drf_yasg',
     # Domain Apps
@@ -70,14 +72,18 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Library: django-log-request-id
     'log_request_id.middleware.RequestIDMiddleware',
+    # Library: django-cors-headers
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
 
 ROOT_URLCONF = 'tappy.urls'
 
@@ -226,6 +232,11 @@ SWAGGER_SETTINGS = {
     }
 }
 FORCE_SCRIPT_NAME = '/'
+
+# Library: django-cors-headers
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = ['*']
 
 # Django: abstract-user
 AUTH_USER_MODEL = "domain_user.User"
