@@ -55,7 +55,7 @@ Here are some instructions for running unit tests:
 ### Combining all test commands:
    Use the following commands to run all tests and generate a coverage report:
    ```
-   docker exec -it real-estate-backend_django_1 coverage run manage.py test -v 2 --no-logs
+   docker exec -it real-estate-backend_django_1 coverage run manage.py test
    docker exec -it real-estate-backend_django_1 coverage html
    open htmlcov/index.html
    ```
