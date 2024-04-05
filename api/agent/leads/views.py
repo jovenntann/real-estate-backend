@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 class LeadsAPIView(ListAPIView):
 
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = LeadFilter
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'company__name', 'status__name']
