@@ -48,4 +48,6 @@ urlpatterns = [
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     # Healt-check
     path('health-check', health_check_view),
+    # API Route
+    path('agent/', include('api.agent.urls')),
 ]

@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'domain.user',
     'domain.system',
     'domain.lead',
+    # API Apps
+    'api.agent',
 ]
 
 MIDDLEWARE = [

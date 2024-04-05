@@ -9,3 +9,4 @@ psycopg2==2.9.9
 coverage==7.4.4
 setuptools==69.2.0 # Github action errors
 Faker==24.4.0
+django-filter==24.2
