@@ -11,7 +11,7 @@ fake = Faker()
 from domain.system.models.Gender import Gender
 from domain.system.models.Company import Company
 from domain.lead.models.Lead import Lead
-from domain.system.models.LeadStatus import LeadStatus
+from domain.lead.models.Status import Status
 
 class Command(BaseCommand):
     help = 'Create system sample data'
@@ -41,7 +41,7 @@ class Command(BaseCommand):
             Company.objects.get_or_create(**company)
             self.stdout.write(self.style.SUCCESS('Successfully created company information "%s"' % company['company_name']))
 
-        lead_statuses = [
+        statuses = [
             'New',
             'Contacted',
             'Qualified',
@@ -49,8 +49,8 @@ class Command(BaseCommand):
             'Won',
         ]
 
-        for status in lead_statuses:
-            LeadStatus.objects.get_or_create(status=status)
+        for status in statuses:
+            Status.objects.get_or_create(status=status)
             self.stdout.write(self.style.SUCCESS('Successfully created lead status "%s"' % status))
 
         for i in range(10):
@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 'email': fake.email(),
                 'phone_number': fake.phone_number(),
                 'company': Company.objects.get(company_name='Tappy Inc.'),
-                'status': LeadStatus.objects.get(status=random.choice(lead_statuses)),
+                'status': Status.objects.get(status=random.choice(statuses)),
             }
 
             Lead.objects.get_or_create(**lead)

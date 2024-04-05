@@ -3,7 +3,7 @@ from domain.common.models.Base import BaseModel
 
 # Related Models
 from domain.system.models.Company import Company
-from domain.system.models.LeadStatus import LeadStatus
+from .Status import Status
 
 import logging
 
@@ -17,7 +17,7 @@ class Lead(BaseModel):
     email = models.EmailField(max_length=255, unique=True)
     phone_number = models.CharField(max_length=20)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='leads')
-    status = models.ForeignKey(LeadStatus, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
     def __str__(self): # pragma: no cover
         return f"{self.first_name} {self.last_name}"

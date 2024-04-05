@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class LeadStatus(BaseModel):
+class Status(BaseModel):
     id = models.AutoField(primary_key=True)
     status = models.CharField(max_length=50, unique=True)
 
@@ -14,5 +14,5 @@ class LeadStatus(BaseModel):
         return self.status
 
     class Meta:
-        verbose_name = "Lead Status"
-        verbose_name_plural = "Lead Statuses"
+        verbose_name = "Status"
+        verbose_name_plural = "Statuses"
