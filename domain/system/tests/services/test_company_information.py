@@ -1,16 +1,16 @@
 from django.test import TestCase
-from ...services.company_information import (
+from ...services.company import (
     get_companies, 
     get_company_by_id,
     delete_company, 
     create_company, 
     update_company
 )
-from domain.system.models.CompanyInformation import CompanyInformation
+from domain.system.models.Company import Company
 
 
-def create_test_company() -> CompanyInformation:
-    company = CompanyInformation.objects.create(
+def create_test_company() -> Company:
+    company = Company.objects.create(
         company_name="test_company",
         address="test_address",
         phone_number="1234567890",

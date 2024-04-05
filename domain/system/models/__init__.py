@@ -1,1 +1,1 @@
-from .CompanyInformation import CompanyInformation
+from .Company import Company
