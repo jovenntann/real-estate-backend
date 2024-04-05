@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class ReadLeadSerializer(serializers.ModelSerializer):
     class Meta:
-        ref_name = "lead-management.leads.ReadLeadSerializer"
+        ref_name = "agent.leads.ReadLeadSerializer"
         model = Lead
         fields = [
             'id',
@@ -25,7 +25,7 @@ class ReadLeadSerializer(serializers.ModelSerializer):
 class CreateLeadSerializer(serializers.ModelSerializer):
 
     class Meta:
-        ref_name = "lead-management.leads.CreateLeadSerializer"
+        ref_name = "agent.leads.CreateLeadSerializer"
         model = Lead
         fields = [
             'first_name',
@@ -40,7 +40,7 @@ class CreateLeadSerializer(serializers.ModelSerializer):
 class PaginateReadLeadSerializer(serializers.Serializer): # noqa
 
     class Meta:
-        ref_name = "lead-management.leads.PaginateReadLeadSerializer"
+        ref_name = "agent.leads.PaginateReadLeadSerializer"
 
     count = serializers.IntegerField()
     next = serializers.URLField()
@@ -51,6 +51,6 @@ class PaginateReadLeadSerializer(serializers.Serializer): # noqa
 class PaginateQueryReadLeadSerializer(serializers.Serializer): # noqa
 
     class Meta:
-        ref_name = "lead-management.leads.PaginateQueryReadLeadSerializer"
+        ref_name = "agent.leads.PaginateQueryReadLeadSerializer"
 
     page = serializers.IntegerField(required=False, help_text="A page number within the paginated result set.")

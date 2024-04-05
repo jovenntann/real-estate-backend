@@ -54,7 +54,7 @@ class LeadsAPIView(ListAPIView):
         },
         operation_description="This operation requires IsAuthenticated permission",
         operation_id="leads_list",
-        tags=["lead-management.leads"],
+        tags=["agent.leads"],
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -64,7 +64,7 @@ class LeadsAPIView(ListAPIView):
         request_body=CreateLeadSerializer,
         operation_description="This operation requires IsAuthenticated permission",
         operation_id="leads_create",
-        tags=["lead-management.leads"],
+        tags=["agent.leads"],
         responses={
             200: ReadLeadSerializer()
         }
