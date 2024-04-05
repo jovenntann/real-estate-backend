@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'domain.common',
     'domain.user',
     'domain.system',
+    'domain.lead',
 ]
 
 MIDDLEWARE = [

@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class CompanyInformation(BaseModel):
+class Company(BaseModel):
     id = models.AutoField(primary_key=True)
     company_name = models.CharField(max_length=50, unique=True)
     address = models.CharField(max_length=255)
