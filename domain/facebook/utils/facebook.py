@@ -1,3 +1,4 @@
+import os
 import requests
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
@@ -47,12 +48,12 @@ def get_all_conversation() -> Optional[ConversationResponse]:
     #             "before": "QVFIUkc0dFNmMk1laF9NeHRiQXpoMlk4UGtOTjZABVFpmcHFRY0tHc2JRYkY5X0NqaTAySzI0WXNBeDI5OTRmcS1sbXZASS2p2ajd4WmZAHeG91VnZAybVVsZAFhqMVpOLWpYWTVRRXdNa1VPdExsektLQmdDNElWWmxpamd2dFlRb2ZABeHpp",
     #             "after": "QVFIUnJKczlWVFlZATnJNcy1jdVJta3psd2NIX3F2cnpmMEZATOHhLQjRNS21RalNhQ3k4SnN6SmRfNUw4cTFhbTdud2NLRng5YnZAtR3hRTGVPV0V0X0JYVXViU3RUN184TGhBWE9IckpPNEowbUJpOTlYZAEFwcl9zT2EtTE9mY3JGYjRR"
     #         },
-    #         "next": "https://graph.facebook.com/v13.0/113575558420278/conversations?access_token=EAALnFZBn4WGQBO9JNdvYz4w1vjFlzj7FLMkn5LgTXI8rxKZCKvV4dnG9mgdZAYZAa9WuDOrLWRXQFlyKuHN93SQ4FGUMAzz0ZAVNsw3dWDEZCTG2msQnsdQ7oE30WzNNKYbQiE2jZC1ZAvUhVskSYgZA8NksN6nykZBHFKN9rZA8AHl30XswZCZCIU1b9xjEuq50tz0s5&limit=499&after=QVFIUnJKczlWVFlZATnJNcy1jdVJta3psd2NIX3F2cnpmMEZATOHhLQjRNS21RalNhQ3k4SnN6SmRfNUw4cTFhbTdud2NLRng5YnZAtR3hRTGVPV0V0X0JYVXViU3RUN184TGhBWE9IckpPNEowbUJpOTlYZAEFwcl9zT2EtTE9mY3JGYjRR"
+    #         "next": "https://graph.facebook.com/v13.0/113575558420278/conversations?access_token="
     #     }
     # }
 
     logger.info("Starting to get all conversation ids")
-    url = 'https://graph.facebook.com/v13.0/113575558420278/conversations?access_token=EAALnFZBn4WGQBO9JNdvYz4w1vjFlzj7FLMkn5LgTXI8rxKZCKvV4dnG9mgdZAYZAa9WuDOrLWRXQFlyKuHN93SQ4FGUMAzz0ZAVNsw3dWDEZCTG2msQnsdQ7oE30WzNNKYbQiE2jZC1ZAvUhVskSYgZA8NksN6nykZBHFKN9rZA8AHl30XswZCZCIU1b9xjEuq50tz0s5&limit=499'
+    url = f'https://graph.facebook.com/v13.0/113575558420278/conversations?access_token={os.environ['PAGE_TOKEN']}&limit=499'
     headers = {'Cookie': 'ps_l=0; ps_n=0'}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
@@ -80,7 +81,7 @@ class MessageResponse:
 
 def get_all_messages_by_conversation_id(conversation_id: str) -> Optional[MessageResponse]:
     logger.info(f"Starting to get all messages for conversation id: {conversation_id}")
-    url = f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token=EAALnFZBn4WGQBO9JNdvYz4w1vjFlzj7FLMkn5LgTXI8rxKZCKvV4dnG9mgdZAYZAa9WuDOrLWRXQFlyKuHN93SQ4FGUMAzz0ZAVNsw3dWDEZCTG2msQnsdQ7oE30WzNNKYbQiE2jZC1ZAvUhVskSYgZA8NksN6nykZBHFKN9rZA8AHl30XswZCZCIU1b9xjEuq50tz0s5'
+    url = f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token={os.environ['PAGE_TOKEN']}'
     headers = {'Cookie': 'ps_l=0; ps_n=0'}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
@@ -123,7 +124,7 @@ class MessageDetailResponse:
 
 def get_message_by_message_id(message_id: str) -> Optional[MessageDetailResponse]:
     logger.info(f"Starting to get message details for message id: {message_id}")
-    url = f'https://graph.facebook.com/v13.0/{message_id}?fields=message%2Cfrom%2Cto%2Cattachments&access_token=EAALnFZBn4WGQBO9JNdvYz4w1vjFlzj7FLMkn5LgTXI8rxKZCKvV4dnG9mgdZAYZAa9WuDOrLWRXQFlyKuHN93SQ4FGUMAzz0ZAVNsw3dWDEZCTG2msQnsdQ7oE30WzNNKYbQiE2jZC1ZAvUhVskSYgZA8NksN6nykZBHFKN9rZA8AHl30XswZCZCIU1b9xjEuq50tz0s5'
+    url = f'https://graph.facebook.com/v13.0/{message_id}?fields=message,from,to,attachments&access_token={os.environ['PAGE_TOKEN']}'
     headers = {'Cookie': 'ps_l=0; ps_n=0'}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
@@ -137,3 +138,4 @@ def get_message_by_message_id(message_id: str) -> Optional[MessageDetailResponse
     else:
         logger.error(f"Failed to get response, status code: {response.status_code}")
         return None
+    
