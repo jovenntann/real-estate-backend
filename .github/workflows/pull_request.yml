@@ -56,6 +56,7 @@ jobs:
         echo "DJANGO_DB_HOST=localhost" >> $GITHUB_ENV
         echo "DJANGO_DB_PASS=postgres" >> $GITHUB_ENV
         echo "DJANGO_DB_PORT=5432" >> $GITHUB_ENV
+        echo "PAGE_TOKEN=PAGE_TOKEN" >> $GITHUB_ENV
 
     - name: Setup Database
       run: |
