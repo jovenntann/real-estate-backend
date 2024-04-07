@@ -59,3 +59,13 @@ Here are some instructions for running unit tests:
    docker exec -it real-estate-backend_django_1 coverage html
    open htmlcov/index.html
    ```
+
+### Project Roadmap
+
+Here is a sample roadmap for this project:
+- [x] Authentication
+- [x] Lead Model
+- [x] System Model
+- [ ] Properties and Property Details (FAQ or Details for RAG)
+- [ ] Facebook Messages Sync
+- [ ] Facebok Page Integration / Login with Facebook (Select Page)

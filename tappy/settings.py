@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'domain.common',
     'domain.user',
     'domain.system',
+    'domain.facebook',
     'domain.lead',
     # API Apps
     'api.authentication',
