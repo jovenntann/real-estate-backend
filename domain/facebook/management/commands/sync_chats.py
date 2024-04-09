@@ -9,7 +9,7 @@ from domain.system.services.company import get_company_by_id
 from domain.facebook.services.page import get_page_by_page_id
 from domain.facebook.services.chat import get_chat_by_message_id, create_chat
 from domain.lead.services.status import get_status_by_id
-from domain.lead.services.lead import get_or_create_lead, get_lead_by_facebook_id
+from domain.lead.services.lead import create_lead, get_lead_by_facebook_id
 
 # Utilities
 from domain.facebook.utils.facebook import get_all_conversation, get_all_messages_by_conversation_id, get_message_by_message_id
@@ -45,7 +45,7 @@ class Command(BaseCommand):
         lead = get_lead_by_facebook_id(facebook_id=message_detail.data.sender.id)
         if lead is None:
             status = get_status_by_id(id=1)
-            lead = get_or_create_lead(
+            lead = create_lead(
                 first_name=message_detail.data.sender.name,
                 last_name='',
                 email=message_detail.data.sender.email,
@@ -76,7 +76,7 @@ class Command(BaseCommand):
                 lead_sender=lead_sender,
                 message=message_detail.data.message,
                 timestamp=created_time,
-                attachments=None
+                attachments=message_detail.data.attachments
             )
         return chat
     

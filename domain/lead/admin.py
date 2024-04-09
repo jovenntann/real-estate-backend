@@ -6,6 +6,12 @@ from domain.lead.models.Status import Status
 from domain.lead.models.Message import Message
 
 # Register Models
-admin.site.register(Lead)
+@admin.register(Lead)
+class LeadAdmin(admin.ModelAdmin):
+    list_display = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'company', 'status', 'facebook_id']
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'page', 'lead', 'source', 'sender', 'message', 'timestamp']
+
 admin.site.register(Status)
-admin.site.register(Message)

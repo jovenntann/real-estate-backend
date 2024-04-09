@@ -10,4 +10,4 @@ admin.site.register(Page)
 # Register Chat in table view
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
-    list_display = ['id', 'page', 'message_id', 'sender', 'page_sender', 'lead_sender', 'message', 'timestamp', 'attachments']
+    list_display = ['id', 'page', 'message_id', 'sender', 'page_sender', 'lead_sender', 'message', 'timestamp']

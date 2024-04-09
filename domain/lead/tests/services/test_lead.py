@@ -3,7 +3,8 @@ from ...services.lead import (
     get_leads, 
     get_lead_by_id,
     delete_lead, 
-    update_lead
+    update_lead,
+    get_lead_by_facebook_id
 )
 from domain.lead.models.Lead import Lead
 from domain.system.models.Company import Company
@@ -118,3 +119,27 @@ class TestServiceLeadUpdateLead(TestCase):
             'status': updated_lead.status,
         })
 
+
+class TestServiceLeadGetByFacebookId(TestCase):
+
+    def test_get_lead_by_facebook_id(self):
+        """Should be able to get a lead by facebook id"""
+        lead = create_test_lead()
+        fetched_lead = get_lead_by_facebook_id(lead.facebook_id)
+        self.assertEqual({
+            'first_name': lead.first_name,
+            'last_name': lead.last_name,
+            'email': lead.email,
+            'phone_number': lead.phone_number,
+            'company': lead.company,
+            'status': lead.status,
+            'facebook_id': lead.facebook_id
+        }, {
+            'first_name': fetched_lead.first_name,
+            'last_name': fetched_lead.last_name,
+            'email': fetched_lead.email,
+            'phone_number': fetched_lead.phone_number,
+            'company': fetched_lead.company,
+            'status': fetched_lead.status,
+            'facebook_id': fetched_lead.facebook_id
+        })

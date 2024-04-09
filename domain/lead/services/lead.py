@@ -32,26 +32,6 @@ def create_lead(first_name: str, last_name: str, email: str, phone_number: str, 
     logger.info(f"\"{lead}\" has been created.")
     return lead
 
-def get_or_create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status, facebook_id: str = None) -> Lead:
-    lead, created = Lead.objects.get_or_create(
-        email=email,
-        defaults={
-            'first_name': first_name,
-            'last_name': last_name,
-            'email': email,
-            'phone_number': phone_number,
-            'company': company,
-            'status': status,
-            'facebook_id': facebook_id
-        }
-    )
-    if created:
-        logger.info(f"\"{lead}\" has been created.")
-    else:
-        logger.info(f"\"{lead}\" already exists.")
-    return lead
-
-
 def update_lead(
         lead: Lead,
         new_first_name: str,
