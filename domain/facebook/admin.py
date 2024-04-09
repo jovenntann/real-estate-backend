@@ -6,4 +6,8 @@ from .models.Chat import Chat
 
 # Register to Django Admin
 admin.site.register(Page)
-admin.site.register(Chat)
+
+# Register Chat in table view
+@admin.register(Chat)
+class ChatAdmin(admin.ModelAdmin):
+    list_display = ['id', 'page', 'message_id', 'sender', 'page_sender', 'lead_sender', 'message', 'timestamp', 'attachments']
