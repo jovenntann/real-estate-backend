@@ -27,7 +27,7 @@ class ConversationResponse:
     data: List[ConversationData]
     paging: Paging
 
-def get_all_conversation() -> Optional[ConversationResponse]:
+def get_all_conversation(access_token: str, page_id: str) -> Optional[ConversationResponse]:
 
     # Sample Response:
     # {
@@ -53,9 +53,8 @@ def get_all_conversation() -> Optional[ConversationResponse]:
     # }
 
     logger.info("Starting to get all conversation ids")
-    url = f'https://graph.facebook.com/v13.0/113575558420278/conversations?access_token={os.environ['PAGE_TOKEN']}&limit=499'
-    headers = {'Cookie': 'ps_l=0; ps_n=0'}
-    response = requests.get(url, headers=headers)
+    url = f'https://graph.facebook.com/v13.0/{page_id}/conversations?access_token={access_token}&limit=499'
+    response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
         response_data = response.json()
@@ -75,15 +74,24 @@ class MessageData:
     created_time: str
 
 @dataclass
+class PagingCursors:
+    before: str
+    after: str
+
+@dataclass
+class Paging:
+    cursors: PagingCursors
+    next: str
+
+@dataclass
 class MessageResponse:
     data: List[MessageData]
     paging: Paging
 
-def get_all_messages_by_conversation_id(conversation_id: str) -> Optional[MessageResponse]:
+def get_all_messages_by_conversation_id(access_token: str, conversation_id: str) -> Optional[MessageResponse]:
     logger.info(f"Starting to get all messages for conversation id: {conversation_id}")
-    url = f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token={os.environ['PAGE_TOKEN']}'
-    headers = {'Cookie': 'ps_l=0; ps_n=0'}
-    response = requests.get(url, headers=headers)
+    url = f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token={access_token}'
+    response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
         response_data = response.json()
@@ -122,11 +130,10 @@ class MessageDetailData:
 class MessageDetailResponse:
     data: MessageDetailData
 
-def get_message_by_message_id(message_id: str) -> Optional[MessageDetailResponse]:
+def get_message_by_message_id(access_token: str, message_id: str) -> Optional[MessageDetailResponse]:
     logger.info(f"Starting to get message details for message id: {message_id}")
-    url = f'https://graph.facebook.com/v13.0/{message_id}?fields=message,from,to,attachments&access_token={os.environ['PAGE_TOKEN']}'
-    headers = {'Cookie': 'ps_l=0; ps_n=0'}
-    response = requests.get(url, headers=headers)
+    url = f'https://graph.facebook.com/v13.0/{message_id}?fields=message,from,to,attachments&access_token={access_token}'
+    response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
         response_data = response.json()

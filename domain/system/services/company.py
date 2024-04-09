@@ -14,8 +14,8 @@ def get_companies() -> List[Company]:
     return companies
 
 
-def get_company_by_id(company_id: int) -> Company:
-    company = Company.objects.filter(id=company_id).first()
+def get_company_by_id(id: int) -> Company:
+    company = Company.objects.filter(id=id).first()
     logger.info(f"{company} fetched")
     return company
 

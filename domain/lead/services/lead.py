@@ -27,11 +27,30 @@ def delete_lead(lead: Lead) -> Lead:
     logger.info(f"{lead} has been deleted.")
     return lead
 
-
-def create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status) -> Lead:
-    lead = Lead.objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, company=company, status=status)
+def create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status, facebook_id: str = None) -> Lead:
+    lead = Lead.objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, company=company, status=status, facebook_id=facebook_id)
     logger.info(f"\"{lead}\" has been created.")
     return lead
+
+def get_or_create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status, facebook_id: str = None) -> Lead:
+    lead, created = Lead.objects.get_or_create(
+        email=email,
+        defaults={
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'phone_number': phone_number,
+            'company': company,
+            'status': status,
+            'facebook_id': facebook_id
+        }
+    )
+    if created:
+        logger.info(f"\"{lead}\" has been created.")
+    else:
+        logger.info(f"\"{lead}\" already exists.")
+    return lead
+
 
 def update_lead(
         lead: Lead,
@@ -40,7 +59,8 @@ def update_lead(
         new_email: str,
         new_phone_number: str,
         new_company: Company,
-        new_status: int
+        new_status: int,
+        new_facebook_id: str = None
     ) -> Lead:
     lead.first_name = new_first_name
     lead.last_name = new_last_name
@@ -48,7 +68,13 @@ def update_lead(
     lead.phone_number = new_phone_number
     lead.company = new_company
     lead.status_id = new_status
+    lead.facebook_id = new_facebook_id
     lead.updated_at = timezone.now()
     lead.save()
     logger.info(f"\"{lead}\" has been updated.")
+    return lead
+
+def get_lead_by_facebook_id(facebook_id: str) -> Lead:
+    lead = Lead.objects.filter(facebook_id=facebook_id).first()
+    logger.info(f"{lead} fetched")
     return lead
