@@ -86,7 +86,7 @@ class Command(BaseCommand):
     def process_message_detail(self, page, company, created_time, message):
         message_detail = self.get_message_detail(page.access_token, message.id)
         if message_detail is not None:
-            logger.info(f"Message ID: {message_detail.data.id}, Message: {message_detail.data.message}")
+            logger.info(f"Processing Message Details ID: {message_detail.data.id}")
             chat = self.get_or_create_chat(page, company, created_time, message_detail)
         else:
             logger.error(f"No details found for message id: {message.id}")

@@ -32,4 +32,4 @@ class Chat(BaseModel):
     attachments = models.JSONField(null=True, blank=True)
     
     def __str__(self): # pragma: no cover
-        return self.message
+        return str(self.id)
