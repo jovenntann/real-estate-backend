@@ -7,9 +7,10 @@ logger = logging.getLogger(__name__)
 # Services
 from domain.system.services.company import get_company_by_id
 from domain.facebook.services.page import get_page_by_page_id
-from domain.facebook.services.chat import get_chat_by_message_id, create_chat
 from domain.lead.services.status import get_status_by_id
 from domain.lead.services.lead import create_lead, get_lead_by_facebook_id
+from domain.facebook.services.chat import get_chat_by_message_id, create_chat
+from domain.lead.services.message import create_message, get_message_by_messenger_id
 
 # Utilities
 from domain.facebook.utils.facebook import get_all_conversation, get_all_messages_by_conversation_id, get_message_by_message_id
@@ -41,7 +42,7 @@ class Command(BaseCommand):
 
     # PROCESS MESSAGE DETAILS
 
-    def get_or_create_lead(self, company, message_detail):
+    def get_or_create_lead_for_sender(self, company, message_detail):
         lead = get_lead_by_facebook_id(facebook_id=message_detail.data.sender.id)
         if lead is None:
             status = get_status_by_id(id=1)
@@ -55,6 +56,22 @@ class Command(BaseCommand):
                 facebook_id=message_detail.data.sender.id
             )
         return lead
+    
+    def get_or_create_lead_for_recipient(self, company, message_detail):
+        logger.info(message_detail)
+        lead = get_lead_by_facebook_id(facebook_id=message_detail.data.recipient.data[0].id)
+        if lead is None:
+            status = get_status_by_id(id=1)
+            lead = create_lead(
+                first_name=message_detail.data.recipient.data[0].name,
+                last_name='',
+                email=message_detail.data.recipient.data[0].email,
+                phone_number='',
+                company=company,
+                status=status,
+                facebook_id=message_detail.data.recipient.data[0].id
+            )
+        return lead
 
     def get_or_create_chat(self, page, company, created_time, message_detail):
         chat = get_chat_by_message_id(message_id=message_detail.data.id)
@@ -63,8 +80,10 @@ class Command(BaseCommand):
                 sender = 'admin'
                 page_sender = page
                 lead_sender = None
+                lead = self.get_or_create_lead_for_recipient(company, message_detail)
             else:
-                lead_sender = self.get_or_create_lead(company, message_detail)
+                lead_sender = self.get_or_create_lead_for_sender(company, message_detail)
+                lead = lead_sender
                 sender = 'customer'
                 page_sender = None
 
@@ -78,6 +97,18 @@ class Command(BaseCommand):
                 timestamp=created_time,
                 attachments=message_detail.data.attachments
             )
+
+            message = get_message_by_messenger_id(messenger_id=message_detail.data.id)
+            if message is None:
+                create_message(
+                    page=page,
+                    lead=lead,
+                    source='messenger',
+                    sender=sender,
+                    message=message_detail.data.message,
+                    timestamp=created_time,
+                    messenger_id=message_detail.data.id,
+                )
         return chat
     
     def get_message_detail(self, access_token, message_id):

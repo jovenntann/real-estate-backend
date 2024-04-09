@@ -16,8 +16,9 @@ class Message(BaseModel):
     lead = models.ForeignKey(Lead, on_delete=models.CASCADE, related_name='messages')
     source = models.CharField(max_length=20, choices=[('messenger', 'Messenger'), ('sms', 'SMS'), ('call', 'Call')], default='messenger')
     sender = models.CharField(max_length=10, choices=[('customer', 'Customer'), ('admin', 'Admin')], default='admin')
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    messenger_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField()
 
     # SMS Platform
     # twilio models.ForeignKey(Twilio, on_delete=models.CASCADE, related_name='messages')
