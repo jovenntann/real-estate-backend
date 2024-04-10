@@ -27,7 +27,7 @@ class Command(BaseCommand):
         
         conversations = get_all_conversation(access_token=page.access_token, page_id=page.page_id)
         if conversations is not None:
-            for conversation in conversations.data[:10]:
+            for conversation in conversations.data[:20]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
                 self.process_messages_for_conversation(page, company, conversation)
         else:
