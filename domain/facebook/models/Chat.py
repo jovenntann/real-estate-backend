@@ -13,20 +13,19 @@ logger = logging.getLogger(__name__)
 class Chat(BaseModel):
 
     SENDER_CHOICES = [
-        ('admin', 'Admin'),
-        ('customer', 'Customer'),
+        ('page', 'Page'),
+        ('lead', 'Lead'),
     ]
         
     id = models.AutoField(primary_key=True)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='page_chats', null=True, blank=True)
     message_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     sender = models.CharField(
         max_length=8,
         choices=SENDER_CHOICES,
-        default='admin',
+        default='page',
     )
-    page_sender = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='page_sender_chats', null=True, blank=True)
-    lead_sender = models.ForeignKey(Lead, on_delete=models.CASCADE, related_name='lead_sender_chats', null=True, blank=True)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='page_chats', null=True, blank=True)
+    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, related_name='lead_chats', null=True, blank=True)
     message = models.TextField()
     timestamp = models.DateTimeField()
     attachments = models.JSONField(null=True, blank=True)

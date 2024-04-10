@@ -74,30 +74,26 @@ class Command(BaseCommand):
         return lead
 
     def get_or_create_chat(self, page, company, created_time, message_detail):
+        # Let's check if chat already exist based on Message ID
         chat = get_chat_by_message_id(message_id=message_detail.data.id)
+        # If Not let's create the Chat
         if chat is None:
             if page.page_id == message_detail.data.sender.id:
-                sender = 'admin'
-                page_sender = page
-                lead_sender = None
+                sender = 'page'
                 lead = self.get_or_create_lead_for_recipient(company, message_detail)
             else:
-                lead_sender = self.get_or_create_lead_for_sender(company, message_detail)
-                lead = lead_sender
-                sender = 'customer'
-                page_sender = None
-
+                sender = 'lead'
+                lead = self.get_or_create_lead_for_sender(company, message_detail)
             chat = create_chat(
-                page=page,
                 message_id=message_detail.data.id,
                 sender=sender,
-                page_sender=page_sender,
-                lead_sender=lead_sender,
+                page=page,
+                lead=lead,
                 message=message_detail.data.message,
-                timestamp=created_time,
-                attachments=message_detail.data.attachments
+                attachments=message_detail.data.attachments,
+                timestamp=created_time
             )
-
+            # Let's also create record for Lead Message
             message = get_message_by_messenger_id(messenger_id=message_detail.data.id)
             if message is None:
                 create_message(
