@@ -27,18 +27,25 @@ class Command(BaseCommand):
         
         conversations = get_all_conversation(access_token=page.access_token, page_id=page.page_id)
         if conversations is not None:
-            for conversation in conversations.data[:10]:
+            for conversation in conversations.data[:1]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
                 self.process_messages_for_conversation(page, company, conversation)
         else:
             logger.error("No conversations found.")
 
-    def process_messages_for_conversation(self, page, company, conversation):
-        messages = get_all_messages_by_conversation_id(access_token=page.access_token, conversation_id=conversation.id)
+    def process_messages_for_conversation(self, page, company, conversation, next_url = None):
+        self.process_messages(page, company, conversation, next_url)
+
+    def process_messages(self, page, company, conversation, next_url = None):
+        messages = get_all_messages_by_conversation_id(access_token=page.access_token, conversation_id=conversation.id, next_url=next_url)
         logger.info(messages)
 
         for message in messages.data:
             self.process_message_detail(page, company, message.created_time, message, conversation)
+
+        while messages.paging.next:
+            next_url = messages.paging.next
+            self.process_messages(page, company, conversation, next_url)
 
     # PROCESS MESSAGE DETAILS
 

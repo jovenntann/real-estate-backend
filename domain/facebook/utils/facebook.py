@@ -88,9 +88,9 @@ class MessageResponse:
     data: List[MessageData]
     paging: Paging
 
-def get_all_messages_by_conversation_id(access_token: str, conversation_id: str) -> Optional[MessageResponse]:
+def get_all_messages_by_conversation_id(access_token: str, conversation_id: str, next_url: str) -> Optional[MessageResponse]:
     logger.info(f"Starting to get all messages for conversation id: {conversation_id}")
-    url = f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token={access_token}'
+    url = next_url if next_url else f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token={access_token}'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
@@ -103,7 +103,6 @@ def get_all_messages_by_conversation_id(access_token: str, conversation_id: str)
     else:
         logger.error(f"Failed to get response, status code: {response.status_code}")
         return None
-
 
 
 
