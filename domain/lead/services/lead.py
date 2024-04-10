@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.utils import timezone
 from typing import List
 
@@ -16,6 +17,11 @@ def get_leads() -> List[Lead]:
     return leads
 
 
+def get_leads_sorted_by_last_message_at() -> List[Lead]:
+    leads = Lead.objects.all().order_by('-last_message_at')
+    logger.info(f"{leads} fetched")
+    return leads
+
 def get_lead_by_id(lead_id: int) -> Lead:
     lead = Lead.objects.filter(id=lead_id).first()
     logger.info(f"{lead} fetched")
@@ -27,10 +33,12 @@ def delete_lead(lead: Lead) -> Lead:
     logger.info(f"{lead} has been deleted.")
     return lead
 
+
 def create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status, facebook_id: str = None) -> Lead:
     lead = Lead.objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, company=company, status=status, facebook_id=facebook_id)
     logger.info(f"\"{lead}\" has been created.")
     return lead
+
 
 def update_lead(
         lead: Lead,
@@ -39,22 +47,33 @@ def update_lead(
         new_email: str,
         new_phone_number: str,
         new_company: Company,
-        new_status: int,
-        new_facebook_id: str = None
+        new_status: Status,
+        new_facebook_id: str = None,
+        new_last_message_at: datetime = None
     ) -> Lead:
     lead.first_name = new_first_name
     lead.last_name = new_last_name
     lead.email = new_email
     lead.phone_number = new_phone_number
     lead.company = new_company
-    lead.status_id = new_status
+    lead.status = new_status
     lead.facebook_id = new_facebook_id
+    lead.last_message_at = new_last_message_at
     lead.updated_at = timezone.now()
     lead.save()
     logger.info(f"\"{lead}\" has been updated.")
     return lead
 
+
 def get_lead_by_facebook_id(facebook_id: str) -> Lead:
     lead = Lead.objects.filter(facebook_id=facebook_id).first()
     logger.info(f"{lead} fetched")
+    return lead
+
+
+def update_lead_last_message_at(lead: Lead, last_message_at: datetime) -> Lead:
+    lead.last_message_at = last_message_at
+    lead.updated_at = timezone.now()
+    lead.save()
+    logger.info(f"\"{lead}\" last message at has been updated.")
     return lead

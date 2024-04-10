@@ -31,7 +31,7 @@ class PageSerializer(serializers.ModelSerializer):
 
 
 class ReadMessageSerializer(serializers.ModelSerializer):
-    
+
     page = PageSerializer(read_only=True)
     lead = LeadSerializer(read_only=True)
 
@@ -45,7 +45,7 @@ class ReadMessageSerializer(serializers.ModelSerializer):
             'source',
             'sender',
             'messenger_id',
-            'message',
+            'message',  
             'timestamp'
         ]
 

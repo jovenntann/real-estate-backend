@@ -1,4 +1,5 @@
 from typing import List
+from django.db.models import Max
 
 # Models
 from domain.lead.models.Message import Message
@@ -66,9 +67,12 @@ def get_message_by_messenger_id(messenger_id: str) -> Message:
     return message
 
 
-
 def get_all_unique_messages() -> List[Message]:
-    unique_messages = Message.objects.order_by('lead', 'timestamp').distinct('lead')
+    # Get the latest message for each lead
+    latest_messages = Message.objects.values('lead').annotate(max_id=Max('id')).order_by()
+
+    # Get the unique messages with unique leads sorted by timestamp in the most recent order
+    unique_messages = Message.objects.filter(id__in=[item['max_id'] for item in latest_messages]).order_by('-timestamp')
     return unique_messages
 
 

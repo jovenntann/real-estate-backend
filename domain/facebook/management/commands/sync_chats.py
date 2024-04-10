@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 from domain.system.services.company import get_company_by_id
 from domain.facebook.services.page import get_page_by_page_id
 from domain.lead.services.status import get_status_by_id
-from domain.lead.services.lead import create_lead, get_lead_by_facebook_id
+from domain.lead.services.lead import create_lead, get_lead_by_facebook_id, update_lead_last_message_at
 from domain.facebook.services.chat import get_chat_by_message_id, create_chat
 from domain.lead.services.message import create_message, get_message_by_messenger_id
 
@@ -38,7 +38,7 @@ class Command(BaseCommand):
         logger.info(messages)
 
         for message in messages.data:
-            self.process_message_detail(page, company, message.created_time, message)
+            self.process_message_detail(page, company, message.created_time, message, conversation)
 
     # PROCESS MESSAGE DETAILS
 
@@ -73,7 +73,7 @@ class Command(BaseCommand):
             )
         return lead
 
-    def get_or_create_chat(self, page, company, created_time, message_detail):
+    def get_or_create_chat(self, page, company, created_time, message_detail, conversation):
         # Let's check if chat already exist based on Message ID
         chat = get_chat_by_message_id(message_id=message_detail.data.id)
         # If Not let's create the Chat
@@ -93,7 +93,7 @@ class Command(BaseCommand):
                 attachments=message_detail.data.attachments,
                 timestamp=created_time
             )
-            # Let's also create record for Lead Message
+            # Let's also create record for Lead Message if not existing
             message = get_message_by_messenger_id(messenger_id=message_detail.data.id)
             if message is None:
                 create_message(
@@ -105,15 +105,17 @@ class Command(BaseCommand):
                     timestamp=created_time,
                     messenger_id=message_detail.data.id,
                 )
+                # Update Lead last_message_at based on Conversation data (this will be repeated)
+                update_lead_last_message_at(lead=lead, last_message_at=conversation.updated_time)
         return chat
     
     def get_message_detail(self, access_token, message_id):
         return get_message_by_message_id(access_token, message_id)
 
-    def process_message_detail(self, page, company, created_time, message):
+    def process_message_detail(self, page, company, created_time, message, conversation):
         message_detail = self.get_message_detail(page.access_token, message.id)
         if message_detail is not None:
             logger.info(f"Processing Message Details ID: {message_detail.data.id}")
-            chat = self.get_or_create_chat(page, company, created_time, message_detail)
+            chat = self.get_or_create_chat(page, company, created_time, message_detail, conversation)
         else:
             logger.error(f"No details found for message id: {message.id}")
