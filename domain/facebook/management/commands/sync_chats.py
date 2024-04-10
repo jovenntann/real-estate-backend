@@ -29,6 +29,7 @@ class Command(BaseCommand):
         if conversations is not None:
             for conversation in conversations.data[:2]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
+                # TODO: if Conversation ID and Updated_Time already exist Skip (Might need to add new field for conversation_id -- tied to the Lead model)
                 self.process_messages_for_conversation(page, company, conversation)
         else:
             logger.error("No conversations found.")
