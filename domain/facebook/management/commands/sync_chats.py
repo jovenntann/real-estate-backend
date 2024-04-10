@@ -27,7 +27,7 @@ class Command(BaseCommand):
         
         conversations = get_all_conversation(access_token=page.access_token, page_id=page.page_id)
         if conversations is not None:
-            for conversation in conversations.data[:1]:
+            for conversation in conversations.data[:2]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
                 self.process_messages_for_conversation(page, company, conversation)
         else:
@@ -41,9 +41,15 @@ class Command(BaseCommand):
         logger.info(messages)
 
         for message in messages.data:
-            self.process_message_detail(page, company, message.created_time, message, conversation)
+            message_detail = self.get_message_detail(page.access_token, message.id)
+            # If Chat Already exist let's skip thie Conversation (Only do this if all the messages are already migrated)
+            chat = get_chat_by_message_id(message_id=message_detail.data.id)
+            if chat:
+                logger.info(f"Chat already exists for message id: {message_detail.data.id}. Skipping..")
+                return
+            self.process_message_detail(page, company, message.created_time, message, message_detail, conversation)
 
-        while messages.paging.next:
+        if messages.paging.next:
             next_url = messages.paging.next
             self.process_messages(page, company, conversation, next_url)
 
@@ -120,8 +126,7 @@ class Command(BaseCommand):
     def get_message_detail(self, access_token, message_id):
         return get_message_by_message_id(access_token, message_id)
 
-    def process_message_detail(self, page, company, created_time, message, conversation):
-        message_detail = self.get_message_detail(page.access_token, message.id)
+    def process_message_detail(self, page, company, created_time, message, message_detail, conversation):
         if message_detail is not None:
             logger.info(f"Processing Message Details ID: {message_detail.data.id}")
             chat = self.get_or_create_chat(page, company, created_time, message_detail, conversation)
