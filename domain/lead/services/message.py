@@ -2,6 +2,7 @@ from typing import List
 
 # Models
 from domain.lead.models.Message import Message
+from domain.lead.models.Lead import Lead
 
 import logging
 logger = logging.getLogger(__name__)
@@ -63,3 +64,9 @@ def get_message_by_messenger_id(messenger_id: str) -> Message:
     message = Message.objects.filter(messenger_id=messenger_id).first()
     logger.info(f"{message} fetched")
     return message
+
+
+
+def get_all_unique_messages() -> List[Message]:
+    unique_messages = Message.objects.order_by('lead', 'timestamp').distinct('lead')
+    return unique_messages
