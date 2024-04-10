@@ -18,6 +18,7 @@ class Message(BaseModel):
     sender = models.CharField(max_length=10, choices=[('lead', 'Lead'), ('page', 'Page')], default='page')
     messenger_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     message = models.TextField(null=True, blank=True)
+    messenger_attachments = models.JSONField(null=True, blank=True)
     timestamp = models.DateTimeField()
 
     # SMS Platform

@@ -27,7 +27,7 @@ def delete_message(message: Message) -> Message:
     return message
 
 
-def create_message(page, lead, source: str, sender: str, message: str, timestamp, messenger_id: str = None) -> Message:
+def create_message(page, lead, source: str, sender: str, message: str, timestamp, messenger_attachments, messenger_id: str = None) -> Message:
     message = Message.objects.create(
         page=page,
         lead=lead,
@@ -35,6 +35,7 @@ def create_message(page, lead, source: str, sender: str, message: str, timestamp
         sender=sender,
         message=message,
         messenger_id=messenger_id,
+        messenger_attachments=messenger_attachments,
         timestamp=timestamp
     )
     logger.info(f"\"{message}\" has been created.")

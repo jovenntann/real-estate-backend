@@ -27,7 +27,7 @@ class Command(BaseCommand):
         
         conversations = get_all_conversation(access_token=page.access_token, page_id=page.page_id)
         if conversations is not None:
-            for conversation in conversations.data[:20]:
+            for conversation in conversations.data[:10]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
                 self.process_messages_for_conversation(page, company, conversation)
         else:
@@ -104,6 +104,7 @@ class Command(BaseCommand):
                     message=message_detail.data.message,
                     timestamp=created_time,
                     messenger_id=message_detail.data.id,
+                    messenger_attachments=message_detail.data.attachments
                 )
                 # Update Lead last_message_at based on Conversation data (this will be repeated)
                 update_lead_last_message_at(lead=lead, last_message_at=conversation.updated_time)
