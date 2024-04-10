@@ -46,6 +46,7 @@ class ReadMessageSerializer(serializers.ModelSerializer):
             'sender',
             'messenger_id',
             'message',  
+            'messenger_attachments',
             'timestamp'
         ]
 
