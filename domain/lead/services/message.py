@@ -70,3 +70,9 @@ def get_message_by_messenger_id(messenger_id: str) -> Message:
 def get_all_unique_messages() -> List[Message]:
     unique_messages = Message.objects.order_by('lead', 'timestamp').distinct('lead')
     return unique_messages
+
+
+def get_messages_by_lead(lead: Lead) -> List[Message]:
+    messages = Message.objects.filter(lead=lead).order_by('timestamp')
+    logger.info(f"Messages for lead {lead} fetched")
+    return messages

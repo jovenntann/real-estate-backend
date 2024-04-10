@@ -1,7 +1,3 @@
-
-# Django
-from django.db.models import Q
-
 # DRF
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -25,8 +21,6 @@ from rest_framework import filters
 # Library: django-filter
 from domain.lead.filters.leads import LeadFilter
 
-# Memphis
-from asgiref.sync import async_to_sync
 
 # Library: drf-yasg
 from drf_yasg.utils import swagger_auto_schema
