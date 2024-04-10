@@ -48,7 +48,8 @@ class ReadLeadSerializer(serializers.ModelSerializer):
             'email',
             'phone_number',
             'company',
-            'status'
+            'status',
+            'last_message_at'
         ]
 
 class CreateLeadSerializer(serializers.ModelSerializer):
