@@ -19,6 +19,7 @@ class ReadMessageSerializer(serializers.ModelSerializer):
             'source',
             'sender',
             'message',
+            'is_read',
             'timestamp'
         ]
 
