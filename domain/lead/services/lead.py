@@ -18,9 +18,10 @@ def get_leads() -> List[Lead]:
 
 
 def get_leads_sorted_by_last_message_at() -> List[Lead]:
-    leads = Lead.objects.all().order_by('-last_message_at')
+    leads = Lead.objects.filter(last_message_at__isnull=False).order_by('-last_message_at')
     logger.info(f"{leads} fetched")
     return leads
+
 
 def get_lead_by_id(lead_id: int) -> Lead:
     lead = Lead.objects.filter(id=lead_id).first()
@@ -34,8 +35,8 @@ def delete_lead(lead: Lead) -> Lead:
     return lead
 
 
-def create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status, facebook_id: str = None) -> Lead:
-    lead = Lead.objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, company=company, status=status, facebook_id=facebook_id)
+def create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status,  facebook_profile_pic: str, facebook_id: str = None) -> Lead:
+    lead = Lead.objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, company=company, status=status, facebook_id=facebook_id, facebook_profile_pic=facebook_profile_pic)
     logger.info(f"\"{lead}\" has been created.")
     return lead
 

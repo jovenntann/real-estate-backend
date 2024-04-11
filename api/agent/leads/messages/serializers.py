@@ -64,6 +64,8 @@ class ReadLeadSerializer(serializers.ModelSerializer):
             'phone_number',
             'company',
             'status',
+            'facebook_id',
+            'facebook_profile_pic',
             'last_message_at',
             'last_message'
         ]

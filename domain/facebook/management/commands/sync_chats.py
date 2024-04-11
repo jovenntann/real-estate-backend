@@ -13,7 +13,7 @@ from domain.facebook.services.chat import get_chat_by_message_id, create_chat
 from domain.lead.services.message import create_message, get_message_by_messenger_id
 
 # Utilities
-from domain.facebook.utils.facebook import get_all_conversation, get_all_messages_by_conversation_id, get_message_by_message_id
+from domain.facebook.utils.facebook import get_all_conversation, get_all_messages_by_conversation_id, get_message_by_message_id, get_user_profile_by_id
 
 class Command(BaseCommand):
     help = 'Create system sample data'
@@ -27,7 +27,7 @@ class Command(BaseCommand):
         
         conversations = get_all_conversation(access_token=page.access_token, page_id=page.page_id)
         if conversations is not None:
-            for conversation in conversations.data[:2]:
+            for conversation in conversations.data[:20]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
                 # TODO: if Conversation ID and Updated_Time already exist Skip (Might need to add new field for conversation_id -- tied to the Lead model)
                 self.process_messages_for_conversation(page, company, conversation)
@@ -56,10 +56,11 @@ class Command(BaseCommand):
 
     # PROCESS MESSAGE DETAILS
 
-    def get_or_create_lead_for_sender(self, company, message_detail):
+    def get_or_create_lead_for_sender(self, company, page, message_detail):
         lead = get_lead_by_facebook_id(facebook_id=message_detail.data.sender.id)
         if lead is None:
             status = get_status_by_id(id=1)
+            user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_detail.data.sender.id)
             lead = create_lead(
                 first_name=message_detail.data.sender.name,
                 last_name='',
@@ -67,15 +68,17 @@ class Command(BaseCommand):
                 phone_number='',
                 company=company,
                 status=status,
-                facebook_id=message_detail.data.sender.id
+                facebook_id=message_detail.data.sender.id,
+                facebook_profile_pic=user_profile.data.profile_pic
             )
         return lead
     
-    def get_or_create_lead_for_recipient(self, company, message_detail):
+    def get_or_create_lead_for_recipient(self, company, page, message_detail):
         logger.info(message_detail)
         lead = get_lead_by_facebook_id(facebook_id=message_detail.data.recipient.data[0].id)
         if lead is None:
             status = get_status_by_id(id=1)
+            user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_detail.data.recipient.data[0].id)
             lead = create_lead(
                 first_name=message_detail.data.recipient.data[0].name,
                 last_name='',
@@ -83,7 +86,8 @@ class Command(BaseCommand):
                 phone_number='',
                 company=company,
                 status=status,
-                facebook_id=message_detail.data.recipient.data[0].id
+                facebook_id=message_detail.data.recipient.data[0].id,
+                facebook_profile_pic=user_profile.data.profile_pic
             )
         return lead
 
@@ -94,10 +98,10 @@ class Command(BaseCommand):
         if chat is None:
             if page.page_id == message_detail.data.sender.id:
                 sender = 'page'
-                lead = self.get_or_create_lead_for_recipient(company, message_detail)
+                lead = self.get_or_create_lead_for_recipient(company, page, message_detail)
             else:
                 sender = 'lead'
-                lead = self.get_or_create_lead_for_sender(company, message_detail)
+                lead = self.get_or_create_lead_for_sender(company, page, message_detail)
             chat = create_chat(
                 message_id=message_detail.data.id,
                 sender=sender,
@@ -118,7 +122,8 @@ class Command(BaseCommand):
                     message=message_detail.data.message,
                     timestamp=created_time,
                     messenger_id=message_detail.data.id,
-                    messenger_attachments=message_detail.data.attachments
+                    messenger_attachments=message_detail.data.attachments,
+                    is_read=False
                 )
                 # Update Lead last_message_at based on Conversation data (this will be repeated)
                 update_lead_last_message_at(lead=lead, last_message_at=conversation.updated_time)
