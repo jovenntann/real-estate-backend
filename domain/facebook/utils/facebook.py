@@ -6,6 +6,9 @@ from dataclasses import dataclass
 import logging
 logger = logging.getLogger(__name__)
 
+
+# Get All Conversations
+
 @dataclass
 class ConversationData:
     id: str
@@ -66,7 +69,8 @@ def get_all_conversation(access_token: str, page_id: str) -> Optional[Conversati
     else:
         logger.error(f"Failed to get response, status code: {response.status_code}")
         return None
-
+    
+# Get All Messages by Conversation ID
 
 @dataclass
 class MessageData:
@@ -105,7 +109,7 @@ def get_all_messages_by_conversation_id(access_token: str, conversation_id: str,
         return None
 
 
-
+# Get Message Details by Message ID
 
 @dataclass
 class SenderData:
@@ -144,7 +148,9 @@ def get_message_by_message_id(access_token: str, message_id: str) -> Optional[Me
     else:
         logger.error(f"Failed to get response, status code: {response.status_code}")
         return None
-    
+
+
+# Get User Profile
 
 @dataclass
 class UserProfileData:
@@ -169,4 +175,44 @@ def get_user_profile_by_id(access_token: str, user_id: str) -> Optional[UserProf
         return UserProfileResponse(data=user_profile_data)
     else:
         logger.error(f"Failed to get response, status code: {response.status_code}")
+        return None
+
+# Send Message
+
+@dataclass
+class SendMessageData:
+    recipient_id: str
+    message_id: str
+
+@dataclass
+class SendMessageResponse:
+    data: SendMessageData
+
+def send_message(access_token: str, recipient_id: str, message: str, tag: str) -> Optional[SendMessageResponse]:
+    logger.info(f"Starting to send message to recipient id: {recipient_id}")
+    url = f'https://graph.facebook.com/v13.0/me/messages?access_token={access_token}'
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    data = {
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "text": message
+        },
+        "tag": tag
+    }
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code == 200:
+        logger.info("Successfully sent message")
+        response_data = response.json()
+        send_message_data = SendMessageData(
+            recipient_id=response_data.get('recipient_id', ''), 
+            message_id=response_data.get('message_id', '')
+        )
+        logger.info("Successfully parsed response data")
+        return SendMessageResponse(data=send_message_data)
+    else:
+        logger.error(f"Failed to send message, status code: {response.status_code}")
         return None

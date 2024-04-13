@@ -83,3 +83,16 @@ class PaginateQueryReadMessageSerializer(serializers.Serializer):
         ref_name = "agent.leads.id.message.PaginateQueryReadMessageSerializer"
 
     page = serializers.IntegerField(required=False, help_text="A page number within the paginated result set.")
+
+
+class SendMessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        ref_name = "agent.leads.id.message.CreateMessageSerializer"
+        model = Message
+        fields = [
+            'page',
+            'source',
+            'sender',
+            'message',
+        ]
