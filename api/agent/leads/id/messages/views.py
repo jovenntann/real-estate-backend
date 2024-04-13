@@ -16,7 +16,7 @@ from .serializers import ReadMessageSerializer, \
     PaginateQueryReadMessageSerializer, SendMessageSerializer
 
 # Services
-from domain.lead.services.lead import get_lead_by_id
+from domain.lead.services.lead import get_lead_by_id, update_lead_last_message_at
 from domain.facebook.services.page import get_page_by_page_id
 from domain.lead.services.message import get_messages_by_lead_id, create_message
 
@@ -107,7 +107,7 @@ class LeadsIdMessagesAPIView(ListAPIView):
             messenger_attachments=message_detail.data.attachments,
             is_read=True
         )
+        update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
         message_serializer = ReadMessageSerializer(message)
 
         return Response(message_serializer.data)
-    
