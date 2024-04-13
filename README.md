@@ -71,3 +71,12 @@ Here is a sample roadmap for this project:
 - [ ] Facebok Page Integration / Login with Facebook (Select Page)
 - [ ] Manage Page Subscribers
 - [ ] Page Broadcast Message
+
+
+### NGROK
+
+ngrok config add-authtoken <token>
+
+### Facebook Webhooks
+
+- https://developers.facebook.com/docs/messenger-platform/webhooks/
