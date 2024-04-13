@@ -69,3 +69,5 @@ Here is a sample roadmap for this project:
 - [ ] Properties and Property Details (FAQ or Details for RAG)
 - [ ] Facebook Messages Sync
 - [ ] Facebok Page Integration / Login with Facebook (Select Page)
+- [ ] Manage Page Subscribers
+- [ ] Page Broadcast Message

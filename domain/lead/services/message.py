@@ -72,13 +72,13 @@ def get_message_by_messenger_id(messenger_id: str) -> Message:
 def get_all_unique_messages() -> List[Message]:
     # Get the latest message for each lead
     latest_messages = Message.objects.values('lead').annotate(max_id=Max('id')).order_by()
-
     # Get the unique messages with unique leads sorted by timestamp in the most recent order
     unique_messages = Message.objects.filter(id__in=[item['max_id'] for item in latest_messages]).order_by('-timestamp')
+    logger.info(f"{len(unique_messages)} unique messages fetched")
     return unique_messages
 
 
-def get_messages_by_lead(lead: Lead) -> List[Message]:
-    messages = Message.objects.filter(lead=lead).order_by('timestamp')
-    logger.info(f"Messages for lead {lead} fetched")
+def get_messages_by_lead_id(lead_id: int) -> List[Message]:
+    messages = Message.objects.filter(lead=lead_id).order_by('timestamp')
+    logger.info(f"{len(messages)} messages for lead {lead_id} fetched")
     return messages

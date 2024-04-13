@@ -15,7 +15,7 @@ from .serializers import ReadMessageSerializer, \
     PaginateQueryReadMessageSerializer
 
 # Services
-from domain.lead.services.message import get_messages_by_lead
+from domain.lead.services.message import get_messages_by_lead_id
 
 # Library: django-filter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -42,7 +42,7 @@ class LeadsIdMessagesAPIView(ListAPIView):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        return get_messages_by_lead(self.kwargs['lead_id'])
+        return get_messages_by_lead_id(self.kwargs['lead_id'])
 
     @swagger_auto_schema(
         responses={

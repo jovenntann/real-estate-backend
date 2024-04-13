@@ -19,7 +19,7 @@ def get_leads() -> List[Lead]:
 
 def get_leads_sorted_by_last_message_at() -> List[Lead]:
     leads = Lead.objects.filter(last_message_at__isnull=False).order_by('-last_message_at')
-    logger.info(f"{leads} fetched")
+    logger.info(f"{len(leads)} leads fetched")
     return leads
 
 

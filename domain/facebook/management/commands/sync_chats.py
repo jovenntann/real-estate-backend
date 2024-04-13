@@ -27,7 +27,7 @@ class Command(BaseCommand):
         
         conversations = get_all_conversation(access_token=page.access_token, page_id=page.page_id)
         if conversations is not None:
-            for conversation in conversations.data[:20]:
+            for conversation in conversations.data[:500]:
                 logger.info(f"Conversation ID: {conversation.id}, Link: {conversation.link}, Updated Time: {conversation.updated_time}")
                 # TODO: if Conversation ID and Updated_Time already exist Skip (Might need to add new field for conversation_id -- tied to the Lead model)
                 self.process_messages_for_conversation(page, company, conversation)
@@ -69,7 +69,7 @@ class Command(BaseCommand):
                 company=company,
                 status=status,
                 facebook_id=message_detail.data.sender.id,
-                facebook_profile_pic=user_profile.data.profile_pic
+                facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
             )
         return lead
     
@@ -87,7 +87,7 @@ class Command(BaseCommand):
                 company=company,
                 status=status,
                 facebook_id=message_detail.data.recipient.data[0].id,
-                facebook_profile_pic=user_profile.data.profile_pic
+                facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
             )
         return lead
 
