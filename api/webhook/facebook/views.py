@@ -17,9 +17,6 @@ from domain.lead.services.status import get_status_by_id
 # Utilities
 from domain.facebook.utils.facebook import get_message_by_message_id, get_user_profile_by_id
 
-# Serializer
-from .serializers import FacebookWebhookSerializer
-
 # Library: drf-yasg
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -60,30 +57,27 @@ class FacebookWebhookAPIView(APIView):
 
         entries = request.data.get('entry')
 
+        # TODO: Get Company by Page ID
         company = get_company_by_id(id=1)
-        page = get_page_by_page_id(page_id=113575558420278)
         
         for entry in entries:
             for messaging in entry.get('messaging', []):
                 if 'message' in messaging: # Message from User
-                    self.process_customer_message(messaging, company, page)
+                    self.process_customer_message(company, messaging)
                 elif 'delivery' in messaging: # Message from Page
-                    self.process_page_message(messaging, company, page)
+                    self.process_page_message(company, messaging)
                             
         return HttpResponse('Success', status=status.HTTP_200_OK)
 
-    def process_customer_message(self, messaging, company, page):
-        logging.info("Message from Customer")
-        sender_id = messaging.get('sender').get('id')
-        logging.info(f"Sender ID: {sender_id}")
-        recipient_id = messaging.get('recipient').get('id')
-        logging.info(f"Recipient ID: {recipient_id}")
+    def process_customer_message(self, company, messaging):
+        page_id = messaging.get('recipient').get('id') # Page
+        user_id = messaging.get('sender').get('id') # User
+        page = get_page_by_page_id(page_id=page_id)
 
-        message_id = messaging.get('message').get('mid')
-        logging.info(f"Message ID: {message_id}")
+        # NOTE: Let's GET Message details from API so that processing of message are in same format
+        message_details = get_message_by_message_id(page.access_token, messaging.get('message').get('mid'))
 
-        message_details = get_message_by_message_id(page.access_token, message_id)
-
+        # If Lead is not existing then create Lead
         lead = get_lead_by_facebook_id(facebook_id=message_details.data.sender.id)
         if lead is None:
             lead_status = get_status_by_id(id=1)
@@ -98,7 +92,7 @@ class FacebookWebhookAPIView(APIView):
                 facebook_id=message_details.data.sender.id,
                 facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
             )
-
+        # If Message is not existing then create Message
         message = get_message_by_messenger_id(messenger_id=message_details.data.id)
         if message is None:
             create_message(
@@ -112,24 +106,28 @@ class FacebookWebhookAPIView(APIView):
                 messenger_attachments=message_details.data.attachments,
                 is_read=False
             )
+        # Update Lead Last Message At
         update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
 
-    def process_page_message(self, messaging, company, page):
-        logging.info("Message from Page")
-        sender_id = messaging.get('sender').get('id') # User
-        logging.info(f"Sender ID: {sender_id}")
-        recipient_id = messaging.get('recipient').get('id') # Page
-        logging.info(f"Recipient ID: {recipient_id}")
-        message_ids = messaging.get('delivery').get('mids')
+    def process_page_message(self, company, messaging):
+        page_id = messaging.get('recipient').get('id') # Page
+        user_id = messaging.get('sender').get('id') # User
+        page = get_page_by_page_id(page_id=page_id)
+        message_ids = messaging.get('delivery').get('mids', [])
         
         for message_id in message_ids:
-            logging.info(f"Delivered Message ID: {message_id}")
+            # NOTE: Let's GET Message details from API so that processing of message are in same format
             message_details = get_message_by_message_id(page.access_token, message_id)
-
+            page_id = message_details.data.sender.id
+            page = get_page_by_page_id(page_id=page_id)
+            sender_id = messaging.get('sender').get('id')
+            logging.info(f"Delivered Message ID: {message_id}")
+            
+            # If Lead is not existing then create Lead
             lead = get_lead_by_facebook_id(facebook_id=sender_id)
             if lead is None:
                 lead_status = get_status_by_id(id=1)
-                user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=sender_id)
+                user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.recipient.data[0].id)
                 lead = create_lead(
                     first_name=user_profile.data.first_name,
                     last_name=user_profile.data.last_name,
@@ -140,6 +138,8 @@ class FacebookWebhookAPIView(APIView):
                     facebook_id=sender_id,
                     facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
                 )
+
+             # If Message is not existing then create Message
             message = get_message_by_messenger_id(messenger_id=message_details.data.id)
             if message is None:
                 create_message(

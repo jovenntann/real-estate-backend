@@ -66,9 +66,12 @@ Here is a sample roadmap for this project:
 - [x] Authentication
 - [x] Lead Model
 - [x] System Model
+- [x] Send Page Message
+- [x] Messaging Webhooks (Sent and Received messages)
 - [ ] Properties and Property Details (FAQ or Details for RAG)
-- [ ] Facebook Messages Sync
-- [ ] Facebok Page Integration / Login with Facebook (Select Page)
+- [ ] Question and Answer model for ChatGPT Custom Model :)
+- [x] Facebook Messages Sync
+- [ ] Facebook Page Integration / Login with Facebook (Select Page)
 - [ ] Manage Page Subscribers
 - [ ] Page Broadcast Message
 
@@ -80,3 +83,4 @@ ngrok config add-authtoken <token>
 ### Facebook Webhooks
 
 - https://developers.facebook.com/docs/messenger-platform/webhooks/
+

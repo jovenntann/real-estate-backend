@@ -19,8 +19,9 @@ class Lead(BaseModel):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='leads')
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
     facebook_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    facebook_profile_pic = models.URLField(max_length=255, null=True, blank=True)
+    facebook_profile_pic = models.URLField(max_length=1000, null=True, blank=True)
     last_message_at = models.DateTimeField(null=True, blank=True)
+    # TODO: messaging_stauts = unread, unanswered, answered, follow-up, etc..
 
     def __str__(self): # pragma: no cover
         return f"{self.first_name} {self.last_name}"

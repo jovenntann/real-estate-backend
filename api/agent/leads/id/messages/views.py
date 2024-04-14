@@ -6,6 +6,8 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
+from rest_framework.status import HTTP_400_BAD_REQUEST
+
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
@@ -92,6 +94,10 @@ class LeadsIdMessagesAPIView(ListAPIView):
             message=message_serializer.validated_data['message'],
             tag='POST_PURCHASE_UPDATE'
         )
+
+        if not message_response:
+            return Response({"error": "Failed to send message"}, status=HTTP_400_BAD_REQUEST)
+        
         # Get Message API
         message_detail = get_message_by_message_id(
             access_token=message_serializer.validated_data['page'].access_token,
