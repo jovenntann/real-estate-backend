@@ -18,7 +18,7 @@ from .serializers import ReadMessageSerializer, \
 # Services
 from domain.lead.services.lead import get_lead_by_id, update_lead_last_message_at
 from domain.facebook.services.page import get_page_by_page_id
-from domain.lead.services.message import get_messages_by_lead_id, create_message
+from domain.lead.services.message import get_messages_by_lead_id, create_message, mark_messages_as_read
 
 # Utilities
 from domain.facebook.utils.facebook import get_message_by_message_id, send_message
@@ -49,7 +49,9 @@ class LeadsIdMessagesAPIView(ListAPIView):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        return get_messages_by_lead_id(self.kwargs['lead_id'])
+        messages = get_messages_by_lead_id(self.kwargs['lead_id'])
+        mark_messages_as_read(messages)
+        return messages
 
     @swagger_auto_schema(
         responses={
@@ -60,8 +62,8 @@ class LeadsIdMessagesAPIView(ListAPIView):
         tags=["agent.lead_messages"],
     )
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
 
+        return super().get(request, *args, **kwargs)
 
     @staticmethod
     @swagger_auto_schema(
