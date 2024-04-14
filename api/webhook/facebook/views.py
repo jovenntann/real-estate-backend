@@ -1,6 +1,6 @@
 
 # Django
-import datetime
+from django.utils import timezone
 from django.http import HttpResponse
 
 # DRF
@@ -8,11 +8,14 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 # Services
+from domain.system.services.company import get_company_by_id
 from domain.facebook.services.page import get_page_by_page_id
-from domain.lead.services.message import create_message
+from domain.lead.services.message import create_message, get_message_by_messenger_id
+from domain.lead.services.lead import create_lead, get_lead_by_facebook_id, update_lead_last_message_at
+from domain.lead.services.status import get_status_by_id
 
 # Utilities
-from domain.facebook.utils.facebook import get_message_by_message_id
+from domain.facebook.utils.facebook import get_message_by_message_id, get_user_profile_by_id
 
 # Serializer
 from .serializers import FacebookWebhookSerializer
@@ -65,6 +68,9 @@ class FacebookWebhookAPIView(APIView):
         logger.info(f"POST request body: {request.data}")
 
         entries = request.data.get('entry')
+
+        company = get_company_by_id(id=1)
+        page = get_page_by_page_id(page_id=113575558420278)
         
         for entry in entries:
             for messaging in entry.get('messaging', []):
@@ -74,37 +80,84 @@ class FacebookWebhookAPIView(APIView):
                     logging.info(f"Sender ID: {sender_id}")
                     recipient_id = messaging.get('recipient').get('id')
                     logging.info(f"Recipient ID: {recipient_id}")
+
+                    message_id = messaging.get('message').get('mid')
+                    logging.info(f"Message ID: {message_id}")
+
+                    message_details = get_message_by_message_id(page.access_token, message_id)
+
+                    lead = get_lead_by_facebook_id(facebook_id=message_details.data.sender.id)
+                    if lead is None:
+                        laad_status = get_status_by_id(id=1)
+                        user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.sender.id)
+                        lead = create_lead(
+                            first_name=message_details.data.sender.name,
+                            last_name='',
+                            email=message_details.data.sender.email,
+                            phone_number='',
+                            company=company,
+                            status=laad_status,
+                            facebook_id=message_details.data.sender.id,
+                            facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
+                        )
+
+                    message = get_message_by_messenger_id(messenger_id=message_details.data.id)
+                    if message is None:
+                        create_message(
+                            page=page,
+                            lead=lead,
+                            source='messenger',
+                            sender='lead',
+                            message=message_details.data.message,
+                            timestamp=timezone.now(),
+                            messenger_id=message_details.data.id,
+                            messenger_attachments=message_details.data.attachments,
+                            is_read=False
+                        )
+                    update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
+
                 elif 'delivery' in messaging:
                     logging.info("Message from Page")
-                    sender_id = messaging.get('sender').get('id')
+                    sender_id = messaging.get('sender').get('id') # User
                     logging.info(f"Sender ID: {sender_id}")
-                    recipient_id = messaging.get('recipient').get('id')
+                    recipient_id = messaging.get('recipient').get('id') # Page
                     logging.info(f"Recipient ID: {recipient_id}")
+                    message_ids = messaging.get('delivery').get('mids')
+                    
+                    for message_id in message_ids:
+                        logging.info(f"Delivered Message ID: {message_id}")
+                        message_details = get_message_by_message_id(page.access_token, message_id)
 
-
-        # entries = request.data.get('entry')
-        # for entry in entries:
-        #     messagings = entry.get('messaging')
-        #     for messaging in messagings:
-        #         page_id = messaging.get('sender').get('id')
-        #         message = messaging.get('message').get('text')
-        #         timestamp = messaging.get('timestamp')
-        #         timestamp = datetime.datetime.fromtimestamp(timestamp / 1000, tz=datetime.timezone.utc)
-
-        #         page = get_page_by_page_id(page_id=page_id)
-
-        #         create_message(
-        #             page=page,
-        #             lead=None,
-        #             source='facebook',
-        #             sender='lead',
-        #             message=message,
-        #             timestamp=timestamp,
-        #             messenger_id=None,
-        #             messenger_attachments=None,
-        #             is_read=False
-        #         )
-
+                        lead = get_lead_by_facebook_id(facebook_id=sender_id)
+                        if lead is None:
+                            laad_status = get_status_by_id(id=1)
+                            user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=sender_id)
+                            lead = create_lead(
+                                first_name=user_profile.data.first_name,
+                                last_name=user_profile.data.last_name,
+                                email=f"{sender_id}@facebook.com",
+                                phone_number='',
+                                company=company,
+                                status=laad_status,
+                                facebook_id=sender_id,
+                                facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
+                            )
+                        # Let's also create record for Lead Message if not existing
+                        message = get_message_by_messenger_id(messenger_id=message_details.data.id)
+                        if message is None:
+                            create_message(
+                                page=page,
+                                lead=lead,
+                                source='messenger',
+                                sender='page',
+                                message=message_details.data.message,
+                                timestamp=timezone.now(),
+                                messenger_id=message_details.data.id,
+                                messenger_attachments=message_details.data.attachments,
+                                is_read=False
+                            )
+                            update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
+                            
         # return HttpResponse()
 
         return HttpResponse('Success', status=status.HTTP_200_OK)
