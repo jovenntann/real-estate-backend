@@ -90,3 +90,20 @@ ngrok config add-authtoken <token>
 
 - https://support.manychat.com/en/support/solutions/articles/36000103309-handover-protocol
 - Closing the Conversation in Manychat will fixed the: "Message failed to send because another app is controlling this thread now"
+
+- To disable Handover protocol, head to the same place. Click on an app again. That will de-select it and the "Select" option will remain. Handover's disabled.
+- After any change, make sure to Refresh Permissions through the Help button.
+
+## NOTES:
+
+1. During ads Enable the Handover protocol and refresh permission
+2. Must closed the conversation once done so that we can received the webhook for this user conversation
+3. Add Sync button to sync-messages after interacting with Manychats
+
+## NOTE: WORKING WITH MANYCHAT
+
+1. Allow ManyChat to Handle automation
+2. Once done, with automation Close the conversation in ManyChat
+3. Sync conversations on Real Estate App
+4. Start conversations
+5. To start automationn again in Manychat Re-open conversation
