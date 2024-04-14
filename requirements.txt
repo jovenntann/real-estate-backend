@@ -11,3 +11,4 @@ setuptools==69.2.0 # Github action errors
 Faker==24.4.0
 django-filter==24.2
 requests==2.31.0
+pusher==3.3.2

@@ -84,3 +84,9 @@ ngrok config add-authtoken <token>
 
 - https://developers.facebook.com/docs/messenger-platform/webhooks/
 - https://developers.facebook.com/docs/messenger-platform/reference/send-api/
+
+- https://www.facebook.com/settings/?tab=advanced_messaging
+- App settings > Handover protocol > Messenger receiver > Tappy
+
+- https://support.manychat.com/en/support/solutions/articles/36000103309-handover-protocol
+- Closing the Conversation in Manychat will fixed the: "Message failed to send because another app is controlling this thread now"

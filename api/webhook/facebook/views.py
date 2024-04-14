@@ -7,15 +7,18 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status
 
+from .serializers import ReadMessageSerializer
+
 # Services
 from domain.system.services.company import get_company_by_id
 from domain.facebook.services.page import get_page_by_page_id
-from domain.lead.services.message import create_message, get_message_by_messenger_id
+from domain.lead.services.message import create_message, get_message_by_messenger_id, get_message_by_id
 from domain.lead.services.lead import create_lead, get_lead_by_facebook_id, update_lead_last_message_at
 from domain.lead.services.status import get_status_by_id
 
 # Utilities
 from domain.facebook.utils.facebook import get_message_by_message_id, get_user_profile_by_id
+from domain.pusher.utils.pusher import send_pusher_notification
 
 # Library: drf-yasg
 from drf_yasg import openapi
@@ -95,7 +98,7 @@ class FacebookWebhookAPIView(APIView):
         # If Message is not existing then create Message
         message = get_message_by_messenger_id(messenger_id=message_details.data.id)
         if message is None:
-            create_message(
+            created_message = create_message(
                 page=page,
                 lead=lead,
                 source='messenger',
@@ -106,8 +109,16 @@ class FacebookWebhookAPIView(APIView):
                 messenger_attachments=message_details.data.attachments,
                 is_read=False
             )
-        # Update Lead Last Message At
-        update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
+
+            # Send to Pusher
+            message_serializer = ReadMessageSerializer(created_message)        
+            channel = f"my-channel"
+            event = "new-message"
+            data = message_serializer.data
+            send_pusher_notification(channel, event, data)
+
+            # Update Lead Last Message At
+            update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
 
     def process_page_message(self, company, messaging):
         page_id = messaging.get('recipient').get('id') # Page
@@ -142,7 +153,7 @@ class FacebookWebhookAPIView(APIView):
              # If Message is not existing then create Message
             message = get_message_by_messenger_id(messenger_id=message_details.data.id)
             if message is None:
-                create_message(
+                created_message = create_message(
                     page=page,
                     lead=lead,
                     source='messenger',
@@ -153,5 +164,13 @@ class FacebookWebhookAPIView(APIView):
                     messenger_attachments=message_details.data.attachments,
                     is_read=True
                 )
+
+                # Send to Pusher
+                message_serializer = ReadMessageSerializer(created_message)        
+                channel = f"my-channel"
+                event = "new-message"
+                data = message_serializer.data
+                send_pusher_notification(channel, event, data)
+                
                 update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
 

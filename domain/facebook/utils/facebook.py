@@ -215,4 +215,5 @@ def send_message(access_token: str, recipient_id: str, message: str, tag: str) -
         return SendMessageResponse(data=send_message_data)
     else:
         logger.error(f"Failed to send message, status code: {response.status_code}")
+        logger.error(f"Failed to send message, error: {response.json()}")
         return None
