@@ -62,13 +62,13 @@ class Command(BaseCommand):
             status = get_status_by_id(id=1)
             user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_detail.data.sender.id)
             lead = create_lead(
-                first_name=message_detail.data.sender.name,
-                last_name='',
-                email=message_detail.data.sender.email,
+                first_name=user_profile.data.first_name,
+                last_name=user_profile.data.last_name,
+                email=f"{user_profile.data.id}@facebook.com",
                 phone_number='',
                 company=company,
                 status=status,
-                facebook_id=message_detail.data.sender.id,
+                facebook_id=user_profile.data.id,
                 facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
             )
         return lead
@@ -80,13 +80,13 @@ class Command(BaseCommand):
             status = get_status_by_id(id=1)
             user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_detail.data.recipient.data[0].id)
             lead = create_lead(
-                first_name=message_detail.data.recipient.data[0].name,
-                last_name='',
-                email=message_detail.data.recipient.data[0].email,
+                first_name=user_profile.data.first_name,
+                last_name=user_profile.data.last_name,
+                email=f"{user_profile.data.id}@facebook.com",
                 phone_number='',
                 company=company,
                 status=status,
-                facebook_id=message_detail.data.recipient.data[0].id,
+                facebook_id=user_profile.data.id,
                 facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
             )
         return lead

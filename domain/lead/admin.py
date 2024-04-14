@@ -4,6 +4,7 @@ from django.contrib import admin
 from domain.lead.models.Lead import Lead
 from domain.lead.models.Status import Status
 from domain.lead.models.Message import Message
+from domain.lead.models.MessageStatus import MessageStatus
 
 # Register Models
 @admin.register(Lead)
@@ -15,5 +16,10 @@ class LeadAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ['id', 'page', 'lead', 'source', 'sender', 'message', 'timestamp']
     list_filter = ['lead']
+
+@admin.register(MessageStatus)
+class MessageStatusAdmin(admin.ModelAdmin):
+    list_display = ['id', 'status', 'description']
+    list_filter = ['status']
 
 admin.site.register(Status)

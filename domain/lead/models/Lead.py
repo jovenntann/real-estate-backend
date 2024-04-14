@@ -4,6 +4,7 @@ from domain.common.models.Base import BaseModel
 # Related Models
 from domain.system.models.Company import Company
 from .Status import Status
+from .MessageStatus import MessageStatus
 
 import logging
 
@@ -21,7 +22,7 @@ class Lead(BaseModel):
     facebook_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
     facebook_profile_pic = models.URLField(max_length=1000, null=True, blank=True)
     last_message_at = models.DateTimeField(null=True, blank=True)
-    # TODO: messaging_stauts = unread, unanswered, answered, follow-up, etc..
-
+    message_status = models.ForeignKey(MessageStatus, on_delete=models.SET_NULL, null=True, blank=True)
+    
     def __str__(self): # pragma: no cover
         return f"{self.first_name} {self.last_name}"
