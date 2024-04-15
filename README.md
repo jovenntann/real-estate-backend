@@ -84,6 +84,7 @@ ngrok config add-authtoken <token>
 
 - https://developers.facebook.com/docs/messenger-platform/webhooks/
 - https://developers.facebook.com/docs/messenger-platform/reference/send-api/
+- https://support.manychat.com/support/solutions/articles/36000195552-message-tags
 
 - https://www.facebook.com/settings/?tab=advanced_messaging
 - App settings > Handover protocol > Messenger receiver > Tappy
@@ -107,3 +108,9 @@ ngrok config add-authtoken <token>
 3. Sync conversations on Real Estate App
 4. Start conversations
 5. To start automationn again in Manychat Re-open conversation
+
+## Goal
+
+1. Get Rid of Manychat (Remove from Page Integration via Manychat Interface or Page Advance Messaging)
+2. Setup Async Task for Get Started, Details Conversation Flow
+3. 
