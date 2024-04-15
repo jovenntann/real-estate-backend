@@ -1,0 +1,34 @@
+## TEXT
+
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713161493190,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"7009285825754582"
+               },
+               "recipient":{
+                  "id":"113575558420278"
+               },
+               "timestamp":1713161492845,
+               "delivery":{
+                  "mids":[
+                     "m_sk6DZZ_lL8y8pTGOwXSSsVurOkQo4BOZ_duwjZMJl4SR7l0ftCdg-GQFZaiDqQqyqjt9YzbYrg8bWh_eKozbyA"
+                  ],
+                  "watermark":1713161490286
+               }
+            }
+         ],
+         "hop_context":{
+            "app_id":817039849052260,
+            "metadata":""
+         }
+      }
+   ]
+}
+```

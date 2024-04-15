@@ -71,11 +71,16 @@ class FacebookWebhookAPIView(APIView):
                     self.process_page_message(company, messaging)
                             
         return HttpResponse('Success', status=status.HTTP_200_OK)
+    
+    # TODO: Handle Sticker Message (Because getting from Get Message ID doesn't return Attachments and it's just an empty Message)
 
     def process_customer_message(self, company, messaging):
         page_id = messaging.get('recipient').get('id') # Page
         user_id = messaging.get('sender').get('id') # User
         page = get_page_by_page_id(page_id=page_id)
+
+        # TODO: Check if Message exist using get_message_by_id(message_id=messaging.get('message').get('mid'))
+        # Logs and then Return
 
         # NOTE: Let's GET Message details from API so that processing of message are in same format
         message_details = get_message_by_message_id(page.access_token, messaging.get('message').get('mid'))

@@ -1,0 +1,143 @@
+## GET STARTED
+
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713161105073,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"7009285825754582"
+               },
+               "recipient":{
+                  "id":"113575558420278"
+               },
+               "timestamp":1713161104448,
+               "postback":{
+                  "title":"Get Started",
+                  "payload":"WELCOME_MESSAGE",
+                  "mid":"m_8o7ORH1ND0F0U1Oxv2cPaFurOkQo4BOZ_duwjZMJl4RSUq13XKBKDF024GXG23FSV2CPuoLlyCSaqG0gWx_jAQ"
+               }
+            }
+         ]
+      }
+   ]
+}
+```
+
+## TEXT NESSAGE
+
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713161184542,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"7009285825754582"
+               },
+               "recipient":{
+                  "id":"113575558420278"
+               },
+               "timestamp":1713161183866,
+               "message":{
+                  "mid":"m_U9-FV8Rpk7P6SnBHQmtM31urOkQo4BOZ_duwjZMJl4SmETSxAWJjiEgWPRr5B7a5ARKZQT_1aIFZGrDICroq9Q",
+                  "text":"Hello po"
+               }
+            }
+         ],
+         "hop_context":{
+            "app_id":817039849052260,
+            "metadata":""
+         }
+      }
+   ]
+}
+```
+
+## PICTURE MESSAGE
+
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713161262690,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"7009285825754582"
+               },
+               "recipient":{
+                  "id":"113575558420278"
+               },
+               "timestamp":1713161261971,
+               "message":{
+                  "mid":"m__-T7rb0-BI2pqmv8egpQElurOkQo4BOZ_duwjZMJl4RSymcxFWQpAV0BCp-fxRmx54QUEzBFsGFEe4i7IJCdyQ",
+                  "attachments":[
+                     {
+                        "type":"image",
+                        "payload":{
+                           "url":"https://scontent.xx.fbcdn.net/v/t1.15752-9/435664931_3887541831473715_3765137625707912574_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=-OdIX7M5Dc8Ab654AT1&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdVr2ZjnB2wrT5i6WNEFl7QloBsbTV0nh3ovAVP-e_wKaw&oe=66443182"
+                        }
+                     }
+                  ]
+               }
+            }
+         ],
+         "hop_context":{
+            "app_id":817039849052260,
+            "metadata":""
+         }
+      }
+   ]
+}
+```
+
+## THUMBS UP
+
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713161317273,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"7009285825754582"
+               },
+               "recipient":{
+                  "id":"113575558420278"
+               },
+               "timestamp":1713161316728,
+               "message":{
+                  "mid":"m_fDxcUa5OemfpMnzYdFDO7VurOkQo4BOZ_duwjZMJl4Swonxi5zGxxUH990heNaaEPFHHmFnYyf7dJ_sZjtkKWg",
+                  "attachments":[
+                     {
+                        "type":"image",
+                        "payload":{
+                           "url":"https://scontent.xx.fbcdn.net/v/t39.1997-6/39178562_1505197616293642_5411344281094848512_n.png?stp=cp0_dst-png&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=bAMhNeoQiZ4Ab7iNdsL&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=00_AfA_W8kJS_MHCN0hxm7cj41fH8SYRcQRKsN3CnJwLI3vZQ&oe=6622820B",
+                           "sticker_id":369239263222822
+                        }
+                     }
+                  ]
+               }
+            }
+         ],
+         "hop_context":{
+            "app_id":817039849052260,
+            "metadata":""
+         }
+      }
+   ]
+}
+```
