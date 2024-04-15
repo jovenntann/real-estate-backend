@@ -69,10 +69,20 @@ class FacebookWebhookAPIView(APIView):
         
         for entry in entries:
             for messaging in entry.get('messaging', []):
-                if 'message' in messaging: # Message from User
+                # events: message_echoes
+                if 'message' in messaging and messaging['message'].get('is_echo', False): # Message from Page
+                    page_id = messaging.get('sender').get('id')
+                    user_id = messaging.get('recipient').get('id')
+                    message_ids = [messaging['message'].get('mid')]
+                    self.process_page_message(company, message_ids, page_id, user_id)
+                # events: messaging
+                elif 'message' in messaging: # Message from User
                     self.process_customer_message(company, messaging)
                 elif 'delivery' in messaging: # Message from Page
-                    self.process_page_message(company, messaging)
+                    page_id = messaging.get('recipient').get('id')
+                    user_id = messaging.get('sender').get('id')
+                    message_ids = messaging.get('delivery').get('mids', [])
+                    self.process_page_message(company, message_ids, messaging, page_id, user_id)
                             
         return HttpResponse('Success', status=status.HTTP_200_OK)
     
@@ -142,33 +152,29 @@ class FacebookWebhookAPIView(APIView):
                         access_token=page.access_token
                     )
 
-    def process_page_message(self, company, messaging):
-        page_id = messaging.get('recipient').get('id') # Page
-        user_id = messaging.get('sender').get('id') # User
+    def process_page_message(self, company, message_ids, page_id, user_id):
         page = get_page_by_page_id(page_id=page_id)
-        message_ids = messaging.get('delivery').get('mids', [])
         
         for message_id in message_ids:
             # NOTE: Let's GET Message details from API so that processing of message are in same format
             message_details = get_message_by_message_id(page.access_token, message_id)
             page_id = message_details.data.sender.id
             page = get_page_by_page_id(page_id=page_id)
-            sender_id = messaging.get('sender').get('id')
             logging.info(f"Delivered Message ID: {message_id}")
             
             # If Lead is not existing then create Lead
-            lead = get_lead_by_facebook_id(facebook_id=sender_id)
+            lead = get_lead_by_facebook_id(facebook_id=user_id)
             if lead is None:
                 lead_status = get_status_by_id(id=1)
                 user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.recipient.data[0].id)
                 lead = create_lead(
                     first_name=user_profile.data.first_name,
                     last_name=user_profile.data.last_name,
-                    email=f"{sender_id}@facebook.com",
+                    email=f"{user_id}@facebook.com",
                     phone_number='',
                     company=company,
                     status=lead_status,
-                    facebook_id=sender_id,
+                    facebook_id=user_id,
                     facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
                 )
 
@@ -204,7 +210,7 @@ class FacebookWebhookAPIView(APIView):
                     templates = get_templates_by_sequence_order(sequence=sequence)
                     for template in templates:
                         send_template_message_response = send_template_message(
-                            user_id=sender_id,
+                            user_id=user_id,
                             template_content=template.template_content,
                             delay=template.delay,
                             access_token=page.access_token

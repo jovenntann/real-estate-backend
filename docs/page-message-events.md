@@ -32,3 +32,37 @@
    ]
 }
 ```
+
+# ECHO EVENTS
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713212946862,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"113575558420278"
+               },
+               "recipient":{
+                  "id":"6288719124541134"
+               },
+               "timestamp":1713212843020,
+               "message":{
+                  "mid":"m_J3IMXFSGUEtURCQ4ilim4xEV-Y9mpJCWuGDQdfbbaAR2gWn6ogIzaLAZpa7wTdlx8Sa_PXZVXA2Fd6g5GbZMcw",
+                  "is_echo":true,
+                  "text":"hey",
+                  "app_id":263902037430900
+               }
+            }
+         ],
+         "hop_context":{
+            "app_id":817039849052260,
+            "metadata":""
+         }
+      }
+   ]
+}
+```
