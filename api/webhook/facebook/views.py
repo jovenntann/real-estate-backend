@@ -129,18 +129,18 @@ class FacebookWebhookAPIView(APIView):
             # Update Lead Last Message At
             update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
 
-        # Process automation
-        if message_details.data.message == 'details':
-            # TODO: Get sequence by Keywords: Pililla Hulo Rizal
-            sequence = get_sequence_by_id(id=1)
-            templates = get_templates_by_sequence_order(sequence=sequence)
-            for template in templates:
-                send_template_message_response = send_template_message(
-                    user_id=message_details.data.sender.id,
-                    template_content=template.template_content,
-                    delay=template.delay,
-                    access_token=page.access_token
-                )
+            # Process automation
+            if message_details.data.message == 'details':
+                # TODO: Get sequence by Keywords: Pililla Hulo Rizal
+                sequence = get_sequence_by_id(id=1)
+                templates = get_templates_by_sequence_order(sequence=sequence)
+                for template in templates:
+                    send_template_message_response = send_template_message(
+                        user_id=message_details.data.sender.id,
+                        template_content=template.template_content,
+                        delay=template.delay,
+                        access_token=page.access_token
+                    )
 
     def process_page_message(self, company, messaging):
         page_id = messaging.get('recipient').get('id') # Page
@@ -196,3 +196,17 @@ class FacebookWebhookAPIView(APIView):
                 
                 update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
 
+                # TODO: Process automation as Page (Handler for message sent from Facebook Page)
+                # NOTE: This might become duplicate of code on the send message backend api endpoint || No need this should be sent over the API select Sequence :)
+                if message_details.data.message == '#details':
+                    # TODO: Get sequence by Keywords: Pililla Hulo Rizal
+                    sequence = get_sequence_by_id(id=1)
+                    templates = get_templates_by_sequence_order(sequence=sequence)
+                    for template in templates:
+                        send_template_message_response = send_template_message(
+                            user_id=sender_id,
+                            template_content=template.template_content,
+                            delay=template.delay,
+                            access_token=page.access_token
+                        )
+                        logger.info(f"Sent template message with id {template.id} and response: {send_template_message_response.data}")
