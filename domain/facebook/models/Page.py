@@ -2,7 +2,6 @@ from django.db import models
 from domain.common.models.Base import BaseModel
 
 import logging
-
 logger = logging.getLogger(__name__)
 
 

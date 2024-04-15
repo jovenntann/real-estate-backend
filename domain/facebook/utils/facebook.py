@@ -217,3 +217,32 @@ def send_message(access_token: str, recipient_id: str, message: str, tag: str) -
         logger.error(f"Failed to send message, status code: {response.status_code}")
         logger.error(f"Failed to send message, error: {response.json()}")
         return None
+
+
+def send_template_message(user_id: str, template_content: dict, delay: int, access_token: str) -> Optional[SendMessageResponse]:
+    import time
+
+    logger.info(f"Starting to send template message to user id: {user_id}")
+    url = f'https://graph.facebook.com/v13.0/me/messages?access_token={access_token}'
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    # Replace user_id in template_content
+    template_content["recipient"]["id"] = user_id
+    data = template_content
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code == 200:
+        logger.info("Successfully sent template message")
+        response_data = response.json()
+        send_message_data = SendMessageData(
+            recipient_id=response_data.get('recipient_id', ''), 
+            message_id=response_data.get('message_id', '')
+        )
+        logger.info("Successfully parsed response data")
+        logger.info(f"Delaying for {delay} seconds before sending the next message")
+        time.sleep(delay)
+        return SendMessageResponse(data=send_message_data)
+    else:
+        logger.error(f"Failed to send template message, status code: {response.status_code}")
+        logger.error(f"Failed to send template message, error: {response.json()}")
+        return None

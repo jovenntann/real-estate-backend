@@ -6,7 +6,6 @@ from domain.lead.models.Lead import Lead
 from domain.facebook.models.Page import Page
 
 import logging
-
 logger = logging.getLogger(__name__)
 
 

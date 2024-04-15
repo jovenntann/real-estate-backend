@@ -16,8 +16,12 @@ from domain.lead.services.message import create_message, get_message_by_messenge
 from domain.lead.services.lead import create_lead, get_lead_by_facebook_id, update_lead_last_message_at
 from domain.lead.services.status import get_status_by_id
 
+# Service: Automation
+from domain.facebook.services.sequence import get_sequence_by_id
+from domain.facebook.services.template import get_templates_by_sequence_order
+
 # Utilities
-from domain.facebook.utils.facebook import get_message_by_message_id, get_user_profile_by_id
+from domain.facebook.utils.facebook import get_message_by_message_id, get_user_profile_by_id, send_template_message
 from domain.pusher.utils.pusher import send_pusher_notification
 
 # Library: drf-yasg
@@ -124,6 +128,19 @@ class FacebookWebhookAPIView(APIView):
 
             # Update Lead Last Message At
             update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
+
+        # Process automation
+        if message_details.data.message == 'details':
+            # TODO: Get sequence by Keywords: Pililla Hulo Rizal
+            sequence = get_sequence_by_id(id=1)
+            templates = get_templates_by_sequence_order(sequence=sequence)
+            for template in templates:
+                send_template_message_response = send_template_message(
+                    user_id=message_details.data.sender.id,
+                    template_content=template.template_content,
+                    delay=template.delay,
+                    access_token=page.access_token
+                )
 
     def process_page_message(self, company, messaging):
         page_id = messaging.get('recipient').get('id') # Page
