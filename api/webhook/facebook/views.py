@@ -82,7 +82,7 @@ class FacebookWebhookAPIView(APIView):
                     page_id = messaging.get('recipient').get('id')
                     user_id = messaging.get('sender').get('id')
                     message_ids = messaging.get('delivery').get('mids', [])
-                    self.process_page_message(company, message_ids, messaging, page_id, user_id)
+                    self.process_page_message(company, message_ids, page_id, user_id)
                             
         return HttpResponse('Success', status=status.HTTP_200_OK)
     
