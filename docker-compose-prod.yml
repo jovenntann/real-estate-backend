@@ -17,7 +17,7 @@ services:
   nginx:
     image: nginx:1.19.0-alpine
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./static:/app/static
       - ./certs:/etc/letsencrypt
     ports:
@@ -32,6 +32,8 @@ services:
       - ./certbot-logs:/var/log/letsencrypt
       - ./static:/app/static
     command: certonly --webroot --webroot-path=/app/static --email jovenntann@gmail.com --agree-tos --no-eff-email --force-renewal -d api.tappy.com.ph
+    depends_on:
+      - nginx
 volumes:
   static_volume:
   certs:
