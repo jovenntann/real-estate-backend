@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
-    ## Library: docker-compose-wait /wait
-    ## it can wait for multiple hosts using WAIT_HOSTS: postgres:5432
     command: >
       sh -c "/wait &&
              python manage.py collectstatic --no-input &&
@@ -14,7 +12,27 @@ services:
              gunicorn tappy.wsgi:application --bind 0.0.0.0:8000"
     volumes:
     - .:/app
-    ports:
-    - "8000:8000"
     env_file:
       - .env.prod
+  nginx:
+    image: nginx:1.19.0-alpine
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./static:/app/static
+      - ./certs:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certs:/etc/letsencrypt
+      - ./certbot-logs:/var/log/letsencrypt
+      - ./static:/app/static
+    command: certonly --webroot --webroot-path=/app/static --email jovenntann@gmail.com --agree-tos --no-eff-email --force-renewal -d api.tappy.com.ph
+volumes:
+  static_volume:
+  certs:
+  certbot-logs:

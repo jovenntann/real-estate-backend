@@ -165,3 +165,8 @@ cython_debug/
 .env.prod
 data/
 backup/
+LOCAL_README.md
+
+# Certbot
+certbot-logs
+certs
