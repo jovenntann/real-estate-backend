@@ -118,3 +118,15 @@ ngrok config add-authtoken <token>
 
 1. Get User Token - https://clerk.com/docs/reference/backend-api/tag/Users#operation/GetOAuthAccessToken
 2. Retrieve Pages using the token and get the page token
+3. https://github.com/clerk/django-example - Clerk Django Example
+
+# Clurk Nuxt Integration
+
+- https://github.com/wobsoriano/nuxt-clerk-template
+- https://www.youtube.com/watch?v=FYb4wfI-AGg&t=1s&ab_channel=CodeWithHafiz
+
+# Django Puser Integration
+
+- https://github.com/akserikawa/nuxt-pusher/tree/main
+- https://blog.rmotr.com/the-definitive-django-pusher-guide-dfe2fb8117cc
+
