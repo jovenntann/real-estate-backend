@@ -113,4 +113,8 @@ ngrok config add-authtoken <token>
 
 1. Get Rid of Manychat (Remove from Page Integration via Manychat Interface or Page Advance Messaging)
 2. Setup Async Task for Get Started, Details Conversation Flow
-3. 
+
+## Clerk API
+
+1. Get User Token - https://clerk.com/docs/reference/backend-api/tag/Users#operation/GetOAuthAccessToken
+2. Retrieve Pages using the token and get the page token

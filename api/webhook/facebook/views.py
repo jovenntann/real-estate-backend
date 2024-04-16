@@ -102,6 +102,7 @@ class FacebookWebhookAPIView(APIView):
         # If Lead is not existing then create Lead
         lead = get_lead_by_facebook_id(facebook_id=message_details.data.sender.id)
         if lead is None:
+            # TODO: Use first name and last name from user profile
             lead_status = get_status_by_id(id=1)
             user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.sender.id)
             lead = create_lead(

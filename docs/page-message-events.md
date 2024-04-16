@@ -66,3 +66,57 @@
    ]
 }
 ```
+
+## DELIVERIES EVENTS: DISABLED FOR NOW
+```json
+{
+   "object":"page",
+   "entry":[
+      {
+         "time":1713240657756,
+         "id":"113575558420278",
+         "messaging":[
+            {
+               "sender":{
+                  "id":"6288719124541134"
+               },
+               "recipient":{
+                  "id":"113575558420278"
+               },
+               "timestamp":1713240657494,
+               "delivery":{
+                  "mids":[
+                     "m_vt59e-H0oDBDhVaWm7bn6hEV-Y9mpJCWuGDQdfbbaASZUZNwo70Y2TwGjRKDCt3IVOMyP8GZ9R9-nJjt9NLMlA",
+                     "m_XHtJHDg4P9Pb2NdssrfiUBEV-Y9mpJCWuGDQdfbbaAR9J_Jq9n8iyMHvX5scGiPYkyaKEABd0dZVOQdwQqr3bA",
+                     "m_oS5V2MOfJanl6uFC49uGKxEV-Y9mpJCWuGDQdfbbaAS3jpVyBTctk4T1k0XQAOVQmoywEWMCP4I0cOAVu3-ytw",
+                     "m_8e1cYkYyps05_sWDq5U7chEV-Y9mpJCWuGDQdfbbaAQaIkuLxcfVRDX1fuCw11oAmqYX49yd5oMJlbiTGJeZPg",
+                     "m_-EWcD3HHR_ZFwL4jE_R7zBEV-Y9mpJCWuGDQdfbbaARp9MxgC4GL98R-rCrH--Ot_lLIu0n7cd0DPXQOP7qgcg",
+                     "m_85QtnPQBMEaXniEhhAWzkREV-Y9mpJCWuGDQdfbbaARd14LRcYEUrWRvchEDRwaledbk_jKqymqquGlLZ-cEEA",
+                     "m_Sfj24x-3NyArs_LOTnF4xxEV-Y9mpJCWuGDQdfbbaASUIiVFAqdbsHqQ8cPaUNkOilerEBCRVFshBubyZYxkKw",
+                     "m_jbdfVieops1ztnbvwbtCBxEV-Y9mpJCWuGDQdfbbaASrXFUoWbwkGiEwgRuRRJ0XMXXrGo4OBFu_R2y0paMnZw",
+                     "m_w2EygHyQT0CM5IlkDFyTpxEV-Y9mpJCWuGDQdfbbaATKdV5rUZ795neld9cGAFpuWzNlWn45uhciTMWb5McY-g",
+                     "m_7vFd8fcWv0_0cTIMm1RDWxEV-Y9mpJCWuGDQdfbbaASrU8qzVItkAWNMDfLRLHQHZmCBaTBKXQTq1VJ4lcXJ4A",
+                     "m_u0RD5xKnWHvnbrMz1KF94hEV-Y9mpJCWuGDQdfbbaAS_jNYHyH1nEQyOcx7FIGiVjR2bYeMYiTl03iAv3yHJcA",
+                     "m_GI-ldr8Xy-EyvXqGvhqiMREV-Y9mpJCWuGDQdfbbaAR8pQPzhanNlsJig--vPS5nDTEpLcPLGokR8p0uhjI_qw",
+                     "m_J3IMXFSGUEtURCQ4ilim4xEV-Y9mpJCWuGDQdfbbaAR2gWn6ogIzaLAZpa7wTdlx8Sa_PXZVXA2Fd6g5GbZMcw",
+                     "m_QsqVuRMhgMJk1F9kphvVhREV-Y9mpJCWuGDQdfbbaAQj3BvJ7X9DXNA-HxRNmh0D7xtSoKUoRWg8h1PIBczSLw",
+                     "m_6yNVEQpLw8PIK_2ruETCAhEV-Y9mpJCWuGDQdfbbaATkTTYbwu5ztEn57ASYgkd61-OmiJrHUlsHJjvAdhfapQ",
+                     "m_rwhFpkhgB-Qc48AyOAQgnREV-Y9mpJCWuGDQdfbbaARWhaxbO9s7VmJrEcr7I6DoGTto1qCRC2z9fonxPa7-yQ",
+                     "m_CqMEP1QRiRvw3MbSQ9G3sxEV-Y9mpJCWuGDQdfbbaAQo9LPUcZ8cvqf4VJEDhQPV7q2_NC3G-bG6yKeCzLl0bQ",
+                     "m_ZchPSzlUIhfa_0n0avmjSBEV-Y9mpJCWuGDQdfbbaAQBhOfu6mtMqCPliwwnFdum0nNNAynD_HDUMBFJzPOQRg",
+                     "m_MOyXxnNW2vKjiUQRsLHUiBEV-Y9mpJCWuGDQdfbbaASsHnye6inhbw0NKih-MN8Qt0N9rD02X7pxqvmLJwVgsA",
+                     "m_dXp-m7XOK5vxvuXjCV3C4xEV-Y9mpJCWuGDQdfbbaASHzGBjIKqiMKWfLPJ2gcSiamzqeYZ3Fz2BcGfrUzpAOw",
+                     "m_OMdUkxW18owLvyzcXNF-gBEV-Y9mpJCWuGDQdfbbaARmy_TrwPgi8ZC4Wb3dvSJXu0QYvK_p-23QXwKTz9RGjA"
+                  ],
+                  "watermark":1713240631367
+               }
+            }
+         ],
+         "hop_context":{
+            "app_id":817039849052260,
+            "metadata":""
+         }
+      }
+   ]
+}
+```
