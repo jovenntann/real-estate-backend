@@ -1,6 +1,16 @@
-
 # Use Python 3.12 as the base image
 FROM python:3.12
+
+# We are using the docker-compose-wait tool in this Dockerfile
+# This tool is used to control the startup order of services in Docker Compose
+# For more details about this tool, visit the following link:
+# https://github.com/ufoscout/docker-compose-wait
+
+# Add the wait script to the image from the specified URL
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+
+# Change the permissions of the wait script to make it executable
+RUN chmod +x /wait
 
 # Set the PYTHONUNBUFFERED environment variable to 1
 # This ensures that Python output is sent straight to terminal without being first buffered
@@ -17,16 +27,3 @@ RUN pip install -r requirements.txt
 
 # Copy the rest of your host's current directory contents into the Docker image
 COPY . /app/
-
-# Expose port 8000 for the application
-# This is the port your Django app will be running on
-EXPOSE 8000
-
-# Command to run the Django server
-# This command will first make migrations without any user input
-# Then it will migrate the database, again without any user input
-# Finally, it will start the Gunicorn server and bind it to the exposed port
-CMD sh -c "\
-    python manage.py makemigrations --noinput && \
-    python manage.py migrate --noinput && \
-    gunicorn tappy.wsgi:application --bind 0.0.0.0:8000"
