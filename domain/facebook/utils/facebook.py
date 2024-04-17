@@ -30,33 +30,10 @@ class ConversationResponse:
     data: List[ConversationData]
     paging: Paging
 
-def get_all_conversation(access_token: str, page_id: str) -> Optional[ConversationResponse]:
-
-    # Sample Response:
-    # {
-    #     "data": [
-    #         {
-    #             "id": "t_2133987576966402",
-    #             "link": "/113575558420278/inbox/305599682551197/",
-    #             "updated_time": "2024-04-07T06:07:04+0000"
-    #         },
-    #         {
-    #             "id": "t_122181828026008887",
-    #             "link": "/113575558420278/inbox/306197225824776/",
-    #             "updated_time": "2024-04-07T03:41:47+0000"
-    #         }
-    #    ],
-    #     "paging": {
-    #         "cursors": {
-    #             "before": "QVFIUkc0dFNmMk1laF9NeHRiQXpoMlk4UGtOTjZABVFpmcHFRY0tHc2JRYkY5X0NqaTAySzI0WXNBeDI5OTRmcS1sbXZASS2p2ajd4WmZAHeG91VnZAybVVsZAFhqMVpOLWpYWTVRRXdNa1VPdExsektLQmdDNElWWmxpamd2dFlRb2ZABeHpp",
-    #             "after": "QVFIUnJKczlWVFlZATnJNcy1jdVJta3psd2NIX3F2cnpmMEZATOHhLQjRNS21RalNhQ3k4SnN6SmRfNUw4cTFhbTdud2NLRng5YnZAtR3hRTGVPV0V0X0JYVXViU3RUN184TGhBWE9IckpPNEowbUJpOTlYZAEFwcl9zT2EtTE9mY3JGYjRR"
-    #         },
-    #         "next": "https://graph.facebook.com/v13.0/113575558420278/conversations?access_token="
-    #     }
-    # }
+def get_all_conversation(access_token: str, page_id: str, next_url: str = None) -> Optional[ConversationResponse]:
 
     logger.info("Starting to get all conversation ids")
-    url = f'https://graph.facebook.com/v13.0/{page_id}/conversations?access_token={access_token}&limit=499'
+    url = next_url if next_url else f'https://graph.facebook.com/v13.0/{page_id}/conversations?access_token={access_token}&limit=499'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
@@ -69,7 +46,6 @@ def get_all_conversation(access_token: str, page_id: str) -> Optional[Conversati
     else:
         logger.error(f"Failed to get response, status code: {response.status_code}")
         return None
-    
 # Get All Messages by Conversation ID
 
 @dataclass
