@@ -74,7 +74,9 @@ Here is a sample roadmap for this project:
 - [ ] Facebook Page Integration / Login with Facebook (Select Page)
 - [ ] Manage Page Subscribers
 - [ ] Page Broadcast Message
-
+- [x] Clerk Auth Integration on Nuxt 3
+- [ ] Clerk Django Integration
+- [x] Pusher Integration
 
 ### NGROK
 
