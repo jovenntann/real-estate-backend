@@ -70,16 +70,15 @@ class Command(BaseCommand):
             lead = self.get_or_create_lead(page=page, company=company, user_id=user_id)
             if not lead:
                 logger.info(f"No lead found for message id: {message_details.data.id}. Skipping..")
-                return
-
-            self.create_and_log_message(
-                page=page, 
-                lead=lead, 
-                conversation=conversation, 
-                message=message, 
-                message_details=message_details, 
-                sender_type=sender_type
-            )
+            if lead:
+                self.create_and_log_message(
+                    page=page, 
+                    lead=lead, 
+                    conversation=conversation, 
+                    message=message, 
+                    message_details=message_details, 
+                    sender_type=sender_type
+                )
 
         if messages.paging.next:
             self.process_conversation_messages(page, company, conversation, messages.paging.next)
