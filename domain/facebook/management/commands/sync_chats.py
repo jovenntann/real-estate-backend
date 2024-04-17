@@ -56,29 +56,30 @@ class Command(BaseCommand):
             message_details = get_message_by_message_id(page.access_token, message.id)
             if message_details is None:
                 logger.error(f"No message details found for message id: {message.id}. Skipping..")
-                return
             
             message_record = get_message_by_messenger_id(messenger_id=message_details.data.id)
             if message_record:
                 logger.info(f"Message already exists for messenger message id: {message_details.data.id}. Skipping..")
-                return
             
-            # Calculated Variables
-            sender_type = 'page' if page.page_id == message_details.data.sender.id else 'lead'
-            user_id = message_details.data.sender.id if sender_type == 'lead' else message_details.data.recipient.data[0].id
+            # If Able to Get Message Details and Message Record do not exist yet: Then let's process it.
+            if message_details and message_record is None:
+                logger.info(f"Processing message id: {message_details.data.id} from sender type: {sender_type}")
+                # Calculated Variables
+                sender_type = 'page' if page.page_id == message_details.data.sender.id else 'lead'
+                user_id = message_details.data.sender.id if sender_type == 'lead' else message_details.data.recipient.data[0].id
 
-            lead = self.get_or_create_lead(page=page, company=company, user_id=user_id)
-            if not lead:
-                logger.info(f"No lead found for message id: {message_details.data.id}. Skipping..")
-            if lead:
-                self.create_and_log_message(
-                    page=page, 
-                    lead=lead, 
-                    conversation=conversation, 
-                    message=message, 
-                    message_details=message_details, 
-                    sender_type=sender_type
-                )
+                lead = self.get_or_create_lead(page=page, company=company, user_id=user_id)
+                if not lead:
+                    logger.info(f"No lead found for message id: {message_details.data.id}. Skipping..")
+                if lead:
+                    self.create_and_log_message(
+                        page=page, 
+                        lead=lead, 
+                        conversation=conversation, 
+                        message=message, 
+                        message_details=message_details, 
+                        sender_type=sender_type
+                    )
 
         if messages.paging.next:
             self.process_conversation_messages(page, company, conversation, messages.paging.next)
