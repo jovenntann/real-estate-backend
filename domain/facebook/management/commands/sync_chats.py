@@ -63,7 +63,7 @@ class Command(BaseCommand):
             
             # If Able to Get Message Details and Message Record do not exist yet: Then let's process it.
             if message_details and message_record is None:
-                logger.info(f"Processing message id: {message_details.data.id} from sender type: {sender_type}")
+                logger.info(f"Processing message id: {message_details.data.id}")
                 # Calculated Variables
                 sender_type = 'page' if page.page_id == message_details.data.sender.id else 'lead'
                 user_id = message_details.data.sender.id if sender_type == 'lead' else message_details.data.recipient.data[0].id
