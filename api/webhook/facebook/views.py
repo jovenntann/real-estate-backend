@@ -89,6 +89,7 @@ class FacebookWebhookAPIView(APIView):
     # TODO: Handle Sticker Message (Because getting from Get Message ID doesn't return Attachments and it's just an empty Message)
 
     def process_customer_message(self, company, messaging):
+        # TODO: Handling of Emoticon E.g thumbs-up
         page_id = messaging.get('recipient').get('id') # Page
         user_id = messaging.get('sender').get('id') # User
         page = get_page_by_page_id(page_id=page_id)

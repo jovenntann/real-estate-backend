@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 class Status(BaseModel):
     id = models.AutoField(primary_key=True)
     status = models.CharField(max_length=50, unique=True)
-
+    color = models.CharField(max_length=50, default="default")
+    
     def __str__(self): # pragma: no cover
         return self.status
 

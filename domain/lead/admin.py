@@ -22,4 +22,6 @@ class MessageStatusAdmin(admin.ModelAdmin):
     list_display = ['id', 'status', 'description']
     list_filter = ['status']
 
-admin.site.register(Status)
+@admin.register(Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ['id', 'status', 'color']

@@ -23,6 +23,8 @@ class Lead(BaseModel):
     facebook_profile_pic = models.URLField(max_length=1000, null=True, blank=True)
     last_message_at = models.DateTimeField(null=True, blank=True)
     message_status = models.ForeignKey(MessageStatus, on_delete=models.SET_NULL, null=True, blank=True)
+    # TODO: Next Status
+    # TODO: Include Message Conversation ID, Field for able to fetch User ID or Thread ID or Message ID
     
     def __str__(self): # pragma: no cover
         return f"{self.first_name} {self.last_name}"
