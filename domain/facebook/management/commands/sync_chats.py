@@ -98,6 +98,8 @@ class Command(BaseCommand):
             return None
 
         status = get_status_by_id(id=1)
+        # TODO: Let us set default value here
+        next_action = None
         return create_lead(
             first_name=user_profile.data.first_name,
             last_name=user_profile.data.last_name,
@@ -105,10 +107,10 @@ class Command(BaseCommand):
             phone_number='',
             company=company,
             status=status,
+            next_action=next_action,
             facebook_id=user_profile.data.id,
             facebook_profile_pic=user_profile.data.profile_pic or 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
         )
-
     def create_and_log_message(self, page: Page, lead: Lead, conversation: ConversationData, message: MessageData, message_details: MessageDetailData, sender_type: str):
         create_message(
             page=page,

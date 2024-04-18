@@ -103,18 +103,22 @@ class FacebookWebhookAPIView(APIView):
         # If Lead is not existing then create Lead
         lead = get_lead_by_facebook_id(facebook_id=message_details.data.sender.id)
         if lead is None:
-            # TODO: Use first name and last name from user profile
-            lead_status = get_status_by_id(id=1)
             user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.sender.id)
+            # TODO: Set default value for this
+            lead_status = get_status_by_id(id=1)
+            message_status = None
+            next_action = None
             lead = create_lead(
-                first_name=message_details.data.sender.name,
-                last_name='',
-                email=message_details.data.sender.email,
+                first_name=user_profile.data.first_name,
+                last_name=user_profile.data.last_name,
+                email=f"{user_profile.data.id}@facebook.com",
                 phone_number='',
                 company=company,
                 status=lead_status,
                 facebook_id=message_details.data.sender.id,
-                facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
+                facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png',
+                message_status=message_status,
+                next_action=next_action
             )
         # If Message is not existing then create Message
         message = get_message_by_messenger_id(messenger_id=message_details.data.id)
@@ -167,19 +171,23 @@ class FacebookWebhookAPIView(APIView):
             # If Lead is not existing then create Lead
             lead = get_lead_by_facebook_id(facebook_id=user_id)
             if lead is None:
-                lead_status = get_status_by_id(id=1)
                 user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.recipient.data[0].id)
+                # TODO: Set default value for this
+                lead_status = get_status_by_id(id=1)
+                message_status = None
+                next_action = None
                 lead = create_lead(
                     first_name=user_profile.data.first_name,
                     last_name=user_profile.data.last_name,
-                    email=f"{user_id}@facebook.com",
+                    email=f"{user_profile.data.id}@facebook.com",
                     phone_number='',
                     company=company,
                     status=lead_status,
-                    facebook_id=user_id,
-                    facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png'
+                    facebook_id=message_details.data.sender.id,
+                    facebook_profile_pic=user_profile.data.profile_pic if user_profile and user_profile.data else 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png',
+                    message_status=message_status,
+                    next_action=next_action
                 )
-
              # If Message is not existing then create Message
             message = get_message_by_messenger_id(messenger_id=message_details.data.id)
             if message is None:

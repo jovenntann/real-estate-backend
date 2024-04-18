@@ -5,6 +5,8 @@ from typing import List
 # Models
 from domain.system.models.Company import Company
 from domain.lead.models.Status import Status
+from domain.lead.models.MessageStatus import MessageStatus
+from domain.lead.models.NextAction import NextAction
 from domain.lead.models.Lead import Lead
 
 import logging
@@ -35,8 +37,31 @@ def delete_lead(lead: Lead) -> Lead:
     return lead
 
 
-def create_lead(first_name: str, last_name: str, email: str, phone_number: str, company: Company, status: Status,  facebook_profile_pic: str, facebook_id: str = None) -> Lead:
-    lead = Lead.objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, company=company, status=status, facebook_id=facebook_id, facebook_profile_pic=facebook_profile_pic)
+def create_lead(
+        first_name: str, 
+        last_name: str, 
+        email: str, 
+        phone_number: str, 
+        company: Company, 
+        status: Status,  
+        facebook_id: str = None, 
+        facebook_profile_pic: str = None, 
+        message_status: MessageStatus = None,
+        next_action: NextAction = None,
+    ) -> Lead:
+    
+    lead = Lead.objects.create(
+        first_name=first_name, 
+        last_name=last_name, 
+        email=email, 
+        phone_number=phone_number, 
+        company=company, 
+        status=status, 
+        next_action=next_action, 
+        facebook_id=facebook_id, 
+        facebook_profile_pic=facebook_profile_pic, 
+        message_status=message_status
+    )
     logger.info(f"\"{lead}\" has been created.")
     return lead
 
@@ -50,7 +75,9 @@ def update_lead(
         new_company: Company,
         new_status: Status,
         new_facebook_id: str = None,
-        new_last_message_at: datetime = None
+        new_last_message_at: datetime = None,
+        new_message_status: MessageStatus = None,
+        new_next_action: NextAction = None
     ) -> Lead:
     lead.first_name = new_first_name
     lead.last_name = new_last_name
@@ -58,8 +85,10 @@ def update_lead(
     lead.phone_number = new_phone_number
     lead.company = new_company
     lead.status = new_status
+    lead.next_action = new_next_action
     lead.facebook_id = new_facebook_id
     lead.last_message_at = new_last_message_at
+    lead.message_status = new_message_status
     lead.updated_at = timezone.now()
     lead.save()
     logger.info(f"\"{lead}\" has been updated.")

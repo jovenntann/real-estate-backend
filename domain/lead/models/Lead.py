@@ -5,6 +5,7 @@ from domain.common.models.Base import BaseModel
 from domain.system.models.Company import Company
 from .Status import Status
 from .MessageStatus import MessageStatus
+from .NextAction import NextAction
 
 import logging
 
@@ -18,12 +19,12 @@ class Lead(BaseModel):
     email = models.EmailField(max_length=255, unique=True, null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='leads')
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
+    next_action = models.ForeignKey(NextAction, on_delete=models.SET_NULL, null=True, blank=True)
     facebook_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
     facebook_profile_pic = models.URLField(max_length=1000, null=True, blank=True)
     last_message_at = models.DateTimeField(null=True, blank=True)
     message_status = models.ForeignKey(MessageStatus, on_delete=models.SET_NULL, null=True, blank=True)
-    # TODO: Next Status
     # TODO: Include Message Conversation ID, Field for able to fetch User ID or Thread ID or Message ID
     
     def __str__(self): # pragma: no cover
