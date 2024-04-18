@@ -5,6 +5,7 @@ from domain.lead.models.Lead import Lead
 from domain.system.models.Company import Company
 from domain.lead.models.Status import Status
 from domain.lead.models.Message import Message
+from domain.lead.models.NextAction import NextAction
 
 import logging
 logger = logging.getLogger(__name__)
@@ -45,13 +46,26 @@ class ReadStatusSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'status',
-            'color'
+            'color',
+            'description'
+        ]
+
+class ReadNextActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        ref_name = "agent.leads.messages.ReadNextActionSerializer"
+        model = NextAction
+        fields = [
+            'id',
+            'action',
+            'color',
+            'description'
         ]
 
 
 class ReadLeadSerializer(serializers.ModelSerializer):
     company = ReadCompanySerializer(read_only=True)
     status = ReadStatusSerializer(read_only=True)
+    next_action = ReadNextActionSerializer(read_only=True)
     last_message = serializers.SerializerMethodField()
 
     class Meta:
@@ -65,6 +79,7 @@ class ReadLeadSerializer(serializers.ModelSerializer):
             'phone_number',
             'company',
             'status',
+            'next_action',
             'facebook_id',
             'facebook_profile_pic',
             'last_message_at',
@@ -88,7 +103,8 @@ class CreateLeadSerializer(serializers.ModelSerializer):
             'email',
             'phone_number',
             'company',
-            'status'
+            'status',
+            'next_action'
         ]
 
 
