@@ -65,30 +65,37 @@ def create_lead(
     logger.info(f"\"{lead}\" has been created.")
     return lead
 
-
 def update_lead(
         lead: Lead,
-        new_first_name: str,
-        new_last_name: str,
-        new_email: str,
-        new_phone_number: str,
-        new_company: Company,
-        new_status: Status,
+        new_first_name: str = None,
+        new_last_name: str = None,
+        new_email: str = None,
+        new_phone_number: str = None,
+        new_company: Company = None,
+        new_status: Status = None,
         new_facebook_id: str = None,
         new_last_message_at: datetime = None,
         new_message_status: MessageStatus = None,
         new_next_action: NextAction = None
     ) -> Lead:
-    lead.first_name = new_first_name
-    lead.last_name = new_last_name
-    lead.email = new_email
-    lead.phone_number = new_phone_number
-    lead.company = new_company
-    lead.status = new_status
-    lead.next_action = new_next_action
-    lead.facebook_id = new_facebook_id
-    lead.last_message_at = new_last_message_at
-    lead.message_status = new_message_status
+    
+    lead_fields = {
+        'first_name': new_first_name,
+        'last_name': new_last_name,
+        'email': new_email,
+        'phone_number': new_phone_number,
+        'company': new_company,
+        'status': new_status,
+        'next_action': new_next_action,
+        'facebook_id': new_facebook_id,
+        'last_message_at': new_last_message_at,
+        'message_status': new_message_status
+    }
+
+    for field, value in lead_fields.items():
+        if value is not None:
+            setattr(lead, field, value)
+
     lead.updated_at = timezone.now()
     lead.save()
     logger.info(f"\"{lead}\" has been updated.")

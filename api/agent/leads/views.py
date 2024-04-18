@@ -67,7 +67,14 @@ class LeadsAPIView(ListAPIView):
         logger.info(f"authenticated: {request.user}")
         lead_serializer = CreateLeadSerializer(data=request.data)
         lead_serializer.is_valid(raise_exception=True)
-        lead = create_lead(lead_serializer.validated_data['first_name'], lead_serializer.validated_data['last_name'], lead_serializer.validated_data['email'], lead_serializer.validated_data['phone_number'], lead_serializer.validated_data['company'], lead_serializer.validated_data['status'])
+        lead = create_lead(
+            lead_serializer.validated_data['first_name'], 
+            lead_serializer.validated_data['last_name'], 
+            lead_serializer.validated_data['email'], 
+            lead_serializer.validated_data['phone_number'], 
+            lead_serializer.validated_data['company'], 
+            lead_serializer.validated_data['status']
+        )
         lead_serializer = ReadLeadSerializer(lead)
 
         return Response(lead_serializer.data)
