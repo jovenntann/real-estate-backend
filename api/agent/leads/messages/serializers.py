@@ -44,7 +44,8 @@ class ReadStatusSerializer(serializers.ModelSerializer):
         model = Status
         fields = [
             'id',
-            'status'
+            'status',
+            'color'
         ]
 
 
