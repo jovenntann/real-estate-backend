@@ -47,7 +47,7 @@ class LeadsMessagesAPIView(ListAPIView):
             200: PaginateReadLeadSerializer()
         },
         operation_description="This operation requires IsAuthenticated permission",
-        operation_id="leads_list",
+        operation_id="leads_message_list",
         tags=["agent.leads.messages"],
     )
     def get(self, request, *args, **kwargs):
