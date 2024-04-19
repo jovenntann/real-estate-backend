@@ -20,13 +20,13 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(MessageStatus)
 class MessageStatusAdmin(admin.ModelAdmin):
-    list_display = ['id', 'status', 'description']
-    list_filter = ['status']
+    list_display = ['id', 'company', 'status', 'description']
+    list_filter = ['status', 'company']
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ['id', 'status', 'color', 'description']
+    list_display = ['id', 'company', 'status', 'color', 'description']
 
 @admin.register(NextAction)
 class NextActionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'action', 'color', 'description']
+    list_display = ['id', 'company', 'action', 'color', 'description']
