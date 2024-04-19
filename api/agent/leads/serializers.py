@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 class ReadCompanySerializer(serializers.ModelSerializer):
     class Meta:
+        # TODO: Add AI Documentation to use proper ref_name 
         ref_name = "agent.leads.ReadCompanySerializer"
         model = Company
         fields = [

@@ -42,6 +42,7 @@ class LeadsAPIView(ListAPIView):
     def get_queryset(self):
         return get_leads()
 
+    # TODO: Add AI Dcoumentation on how to name the operation_description. operation_id and tags correctly
     @swagger_auto_schema(
         responses={
             200: PaginateReadLeadSerializer()
