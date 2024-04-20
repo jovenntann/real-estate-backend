@@ -21,3 +21,4 @@ class NextAction(BaseModel):
     class Meta:
         verbose_name = "Next Action"
         verbose_name_plural = "Next Actions"
+        ordering = ['id']
