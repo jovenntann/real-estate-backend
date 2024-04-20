@@ -10,7 +10,7 @@ from domain.lead.models.NextAction import NextAction
 # Register Models
 @admin.register(Lead)
 class LeadAdmin(admin.ModelAdmin):
-    list_display = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'company', 'status', 'next_action', 'facebook_id', 'last_message_at']
+    list_display = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'company', 'status', 'next_action', 'facebook_id', 'facebook_conversation_id', 'last_message_at']
     list_filter = ['status', 'next_action']
 
 @admin.register(Message)

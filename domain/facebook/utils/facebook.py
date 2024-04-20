@@ -33,7 +33,7 @@ class ConversationResponse:
 def get_all_conversation(access_token: str, page_id: str, next_url: str = None) -> Optional[ConversationResponse]:
 
     logger.info("Starting to get all conversation ids")
-    url = next_url if next_url else f'https://graph.facebook.com/v13.0/{page_id}/conversations?access_token={access_token}&limit=499'
+    url = next_url if next_url else f'https://graph.facebook.com/v13.0/{page_id}/conversations?access_token={access_token}&limit=100'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")

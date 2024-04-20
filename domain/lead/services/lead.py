@@ -45,7 +45,8 @@ def create_lead(
         company: Company, 
         status: Status,  
         facebook_id: str = None, 
-        facebook_profile_pic: str = None, 
+        facebook_profile_pic: str = None,
+        facebook_conversation_id: str = None,
         message_status: MessageStatus = None,
         next_action: NextAction = None,
     ) -> Lead:
@@ -60,6 +61,7 @@ def create_lead(
         next_action=next_action, 
         facebook_id=facebook_id, 
         facebook_profile_pic=facebook_profile_pic, 
+        facebook_conversation_id=facebook_conversation_id,
         message_status=message_status
     )
     logger.info(f"\"{lead}\" has been created.")
@@ -74,6 +76,7 @@ def update_lead(
         new_company: Company = None,
         new_status: Status = None,
         new_facebook_id: str = None,
+        new_facebook_conversation_id: str = None,
         new_last_message_at: datetime = None,
         new_message_status: MessageStatus = None,
         new_next_action: NextAction = None
@@ -88,6 +91,7 @@ def update_lead(
         'status': new_status,
         'next_action': new_next_action,
         'facebook_id': new_facebook_id,
+        'facebook_conversation_id': new_facebook_conversation_id,
         'last_message_at': new_last_message_at,
         'message_status': new_message_status
     }
