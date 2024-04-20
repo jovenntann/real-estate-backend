@@ -6,11 +6,14 @@ import logging
 from domain.system.models.Company import Company
 from domain.facebook.models.Page import Page
 from domain.lead.models.Lead import Lead
+from domain.lead.models.Status import Status
+from domain.lead.models.NextAction import NextAction
 
 # Importing services and utilities
 from domain.system.services.company import get_company_by_id
 from domain.facebook.services.page import get_page_by_page_id
 from domain.lead.services.status import get_status_by_id
+from domain.lead.services.next_action import get_next_action_by_id
 from domain.lead.services.lead import create_lead, get_lead_by_facebook_id, update_lead_last_message_at
 from domain.lead.services.message import create_message, get_message_by_messenger_id
 from domain.facebook.utils.facebook import (
@@ -79,9 +82,9 @@ class Command(BaseCommand):
                 user_id = message_details.data.sender.id if sender_type == 'lead' else message_details.data.recipient.data[0].id
 
                 # TODO: Lead Status and Lead Next Action (Set this value based on Company)
-                status_id = 10
-                next_action_id = 2
-                lead = self.get_or_create_lead(page=page, company=company, user_id=user_id, conversation_id=conversation.id, status_id=status_id, next_action_id=next_action_id)
+                status = get_status_by_id(id=10)
+                next_action = get_next_action_by_id(id=2)
+                lead = self.get_or_create_lead(page=page, company=company, user_id=user_id, conversation_id=conversation.id, status=status, next_action=next_action)
                 if not lead:
                     logger.info(f"No lead found for message id: {message_details.data.id}. Skipping..")
                 if lead:
@@ -97,7 +100,7 @@ class Command(BaseCommand):
         if messages.paging.next:
             self.process_conversation_messages(page, company, conversation, messages.paging.next)
 
-    def get_or_create_lead(self, page: Lead, company: Company, user_id: int, conversation_id: str, status_id: int, next_action_id: int):
+    def get_or_create_lead(self, page: Lead, company: Company, user_id: int, conversation_id: str, status: Status, next_action: NextAction):
         lead = get_lead_by_facebook_id(facebook_id=user_id)
         if lead:
             return lead
@@ -116,8 +119,8 @@ class Command(BaseCommand):
             facebook_id=user_profile.data.id,
             facebook_profile_pic=user_profile.data.profile_pic or 'https://cdn.pixabay.com/photo/2013/07/13/10/44/man-157699_640.png',
             facebook_conversation_id=conversation_id,
-            status=status_id,
-            next_action=next_action_id
+            status=status,
+            next_action=next_action
         )
     def create_and_log_message(self, page: Page, lead: Lead, conversation: ConversationData, message: MessageData, message_details: MessageDetailData, sender_type: str):
         create_message(
