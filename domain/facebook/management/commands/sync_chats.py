@@ -69,10 +69,12 @@ class Command(BaseCommand):
             message_details = get_message_by_message_id(page.access_token, message.id)
             if message_details is None:
                 logger.error(f"No message details found for message id: {message.id}. Skipping..")
+                return
             
             message_record = get_message_by_messenger_id(messenger_id=message_details.data.id)
             if message_record:
                 logger.info(f"Message already exists for messenger message id: {message_details.data.id}. Skipping..")
+                return
             
             # If Able to Get Message Details and Message Record do not exist yet: Then let's process it.
             if message_details and message_record is None:
