@@ -77,6 +77,7 @@ Here is a sample roadmap for this project:
 - [x] Clerk Auth Integration on Nuxt 3
 - [ ] Clerk Django Integration
 - [x] Pusher Integration
+- [x] Auto tagging based on business logic (Example: Did not replied from Automated message for 2 or 3 days)
 
 ### NGROK
 
