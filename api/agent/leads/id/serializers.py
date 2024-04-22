@@ -62,7 +62,9 @@ class ReadLeadSerializer(serializers.ModelSerializer):
 
 class UpdateLeadSerializer(serializers.ModelSerializer):
     # BUG FIX: "lead with this email already exists."
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
 
     class Meta:
         ref_name = "agent.leads.id.UpdateLeadSerializer"
