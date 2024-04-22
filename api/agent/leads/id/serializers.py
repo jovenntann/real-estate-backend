@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 # Models
+from domain.lead.models.Message import Message
 from domain.lead.models.Lead import Lead
 from domain.system.models.Company import Company
 from domain.lead.models.Status import Status
@@ -34,12 +35,24 @@ class MessageStatusSerializer(serializers.ModelSerializer):
         model = MessageStatus
         fields = ['id', 'status', 'description']
 
-
+class ReadMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        ref_name = "agent.leads.id.ReadMessageSerializer"
+        model = Message
+        fields = [
+            'id',
+            'source',
+            'sender',
+            'message',
+            'is_read',
+            'timestamp'
+        ]
 class ReadLeadSerializer(serializers.ModelSerializer):
     company = CompanySerializer()
     status = StatusSerializer()
     next_action = NextActionSerializer()
     message_status = MessageStatusSerializer()
+    last_message = serializers.SerializerMethodField()
 
     class Meta:
         ref_name = "agent.leads.id.ReadLeadSerializer"
@@ -56,9 +69,15 @@ class ReadLeadSerializer(serializers.ModelSerializer):
             'facebook_id',
             'facebook_profile_pic',
             'last_message_at',
-            'message_status'
+            'message_status',
+            'last_message'
         ]
 
+    def get_last_message(self, obj):
+        last_message = obj.messages.order_by('-timestamp').first()
+        if last_message:
+            return ReadMessageSerializer(last_message).data
+        return None
 
 class UpdateLeadSerializer(serializers.ModelSerializer):
     # BUG FIX: "lead with this email already exists."
