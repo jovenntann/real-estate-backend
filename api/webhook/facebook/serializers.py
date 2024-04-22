@@ -49,6 +49,7 @@ class LeadSerializer(serializers.ModelSerializer):
             'phone_number',
             'company',
             'status',
+            'next_action',
             'facebook_id',
             'facebook_profile_pic',
             'last_message_at',
