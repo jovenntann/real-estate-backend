@@ -32,6 +32,25 @@ class ReadNextActionSerializer(serializers.ModelSerializer):
         ]
 
 
+class LastMessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        ref_name = "webhook.facebook.LastMessageSerializer"
+        model = Message
+        fields = [
+            'id',
+            'page',
+            'lead',
+            'source',
+            'sender',
+            'messenger_id',
+            'message',  
+            'messenger_attachments',
+            'is_read',
+            'timestamp'
+        ]
+
+
 class LeadSerializer(serializers.ModelSerializer):
 
     status = ReadStatusSerializer(read_only=True)
@@ -59,9 +78,9 @@ class LeadSerializer(serializers.ModelSerializer):
     def get_last_message(self, obj):
         last_message = obj.messages.order_by('-timestamp').first()
         if last_message:
-            return serializers.SerializerMethodField('ReadMessageSerializer')(last_message).data
+            return LastMessageSerializer(last_message).data
         return None
-    
+
 
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
