@@ -4,10 +4,63 @@ from rest_framework import serializers
 from domain.lead.models.Message import Message
 from domain.lead.models.Lead import Lead
 from domain.facebook.models.Page import Page
+from domain.lead.models.Status import Status
+from domain.lead.models.NextAction import NextAction
+
+
+
+class ReadStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        ref_name = "agent.leads.id.message.ReadStatusSerializer"
+        model = Status
+        fields = [
+            'id',
+            'status',
+            'color',
+            'description'
+        ]
+
+
+class ReadNextActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        ref_name = "agent.leads.id.message.ReadNextActionSerializer"
+        model = NextAction
+        fields = [
+            'id',
+            'action',
+            'color',
+            'description'
+        ]
+
+
+
+class LastMessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        ref_name = "agent.leads.id.message.LastMessageSerializer"
+        model = Message
+        fields = [
+            'id',
+            'page',
+            'lead',
+            'source',
+            'sender',
+            'messenger_id',
+            'message',  
+            'messenger_attachments',
+            'is_read',
+            'timestamp'
+        ]
 
 
 class LeadSerializer(serializers.ModelSerializer):
+
+    status = ReadStatusSerializer(read_only=True)
+    next_action = ReadNextActionSerializer(read_only=True)
+    last_message = serializers.SerializerMethodField()
+
     class Meta:
+        ref_name = "agent.leads.id.message.LeadSerializer"
         model = Lead
         fields = [
             'id',
@@ -17,8 +70,19 @@ class LeadSerializer(serializers.ModelSerializer):
             'phone_number',
             'company',
             'status',
-            'facebook_id'
+            'next_action',
+            'facebook_id',
+            'facebook_profile_pic',
+            'last_message_at',
+            'last_message'
         ]
+
+    def get_last_message(self, obj):
+        last_message = obj.messages.order_by('-timestamp').first()
+        if last_message:
+            return LastMessageSerializer(last_message).data
+        return None
+
 
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
