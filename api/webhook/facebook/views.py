@@ -147,7 +147,7 @@ class FacebookWebhookAPIView(APIView):
             update_lead_last_message_at(lead=lead, last_message_at=timezone.now())
 
             # Process automation
-            if message_details.data.message == 'details':
+            if 'details' in message_details.data.message.lower() or "i'm interested" in message_details.data.message.lower() or "get started" in message_details.data.message.lower():
                 # TODO: Get sequence by Keywords: Pililla Hulo Rizal
                 sequence = get_sequence_by_id(id=1)
                 templates = get_templates_by_sequence_order(sequence=sequence)
