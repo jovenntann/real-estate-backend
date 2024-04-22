@@ -15,6 +15,7 @@ from domain.facebook.services.page import get_page_by_page_id
 from domain.lead.services.message import create_message, get_message_by_messenger_id, get_message_by_id
 from domain.lead.services.lead import create_lead, get_lead_by_facebook_id, update_lead_last_message_at
 from domain.lead.services.status import get_status_by_id
+from domain.lead.services.next_action import get_next_action_by_id
 
 # Service: Automation
 from domain.facebook.services.sequence import get_sequence_by_id
@@ -105,9 +106,9 @@ class FacebookWebhookAPIView(APIView):
         if lead is None:
             user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.sender.id)
             # TODO: Set default value for this
-            lead_status = get_status_by_id(id=1)
+            lead_status = get_status_by_id(id=10)
+            next_action = get_next_action_by_id(id=7)
             message_status = None
-            next_action = None
             lead = create_lead(
                 first_name=user_profile.data.first_name,
                 last_name=user_profile.data.last_name,
@@ -173,9 +174,9 @@ class FacebookWebhookAPIView(APIView):
             if lead is None:
                 user_profile = get_user_profile_by_id(access_token=page.access_token, user_id=message_details.data.recipient.data[0].id)
                 # TODO: Set default value for this
-                lead_status = get_status_by_id(id=1)
+                lead_status = get_status_by_id(id=10)
+                next_action = get_next_action_by_id(id=7)
                 message_status = None
-                next_action = None
                 lead = create_lead(
                     first_name=user_profile.data.first_name,
                     last_name=user_profile.data.last_name,

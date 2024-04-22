@@ -83,7 +83,7 @@ class Command(BaseCommand):
 
                 # TODO: Lead Status and Lead Next Action (Set this value based on Company)
                 status = get_status_by_id(id=10)
-                next_action = get_next_action_by_id(id=2)
+                next_action = get_next_action_by_id(id=7)
                 lead = self.get_or_create_lead(page=page, company=company, user_id=user_id, conversation_id=conversation.id, status=status, next_action=next_action)
                 if not lead:
                     logger.info(f"No lead found for message id: {message_details.data.id}. Skipping..")
