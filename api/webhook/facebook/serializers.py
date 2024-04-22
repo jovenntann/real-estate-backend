@@ -59,7 +59,7 @@ class LeadSerializer(serializers.ModelSerializer):
     def get_last_message(self, obj):
         last_message = obj.messages.order_by('-timestamp').first()
         if last_message:
-            return ReadMessageSerializer(last_message).data
+            return serializers.SerializerMethodField('ReadMessageSerializer')(last_message).data
         return None
     
 
