@@ -56,6 +56,12 @@ class LeadSerializer(serializers.ModelSerializer):
             'last_message'
         ]
 
+    def get_last_message(self, obj):
+        last_message = obj.messages.order_by('-timestamp').first()
+        if last_message:
+            return ReadMessageSerializer(last_message).data
+        return None
+    
 
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
