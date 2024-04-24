@@ -19,7 +19,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 # Library: django-filter
-from domain.lead.filters.leads import LeadFilter
+from domain.lead.filters.lead_messages import LeadMessagesFilter
 
 
 # Library: drf-yasg
@@ -33,9 +33,9 @@ class LeadsMessagesAPIView(ListAPIView):
 
     # permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_class = LeadFilter
-    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'company__name', 'status__name']
-    ordering_fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'company__name', 'status__name']
+    filterset_class = LeadMessagesFilter
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'company__name', 'status__status', 'next_action__action']
+    ordering_fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'company__name', 'status__status', 'next_action__action']
     serializer_class = ReadLeadSerializer
     pagination_class = PageNumberPagination
 
