@@ -7,9 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 
 # Serializers
-from .serializers import ReadLeadSerializer, \
-    CreateLeadSerializer, PaginateReadLeadSerializer, \
-    PaginateQueryReadLeadSerializer
+from .serializers import ReadLeadSerializer, PaginateReadLeadSerializer
 
 # Services
 from domain.lead.services.lead import get_leads_sorted_by_last_message_at
