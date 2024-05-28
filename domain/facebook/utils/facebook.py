@@ -33,7 +33,7 @@ class ConversationResponse:
 def get_all_conversation(access_token: str, page_id: str, next_url: str = None) -> Optional[ConversationResponse]:
 
     logger.info("Starting to get all conversation ids")
-    url = next_url if next_url else f'https://graph.facebook.com/v13.0/{page_id}/conversations?access_token={access_token}&limit=100'
+    url = next_url if next_url else f'https://graph.facebook.com/v20.0/{page_id}/conversations?access_token={access_token}&limit=100'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
@@ -70,7 +70,7 @@ class MessageResponse:
 
 def get_all_messages_by_conversation_id(access_token: str, conversation_id: str, next_url: str) -> Optional[MessageResponse]:
     logger.info(f"Starting to get all messages for conversation id: {conversation_id}")
-    url = next_url if next_url else f'https://graph.facebook.com/v13.0/{conversation_id}/messages?access_token={access_token}'
+    url = next_url if next_url else f'https://graph.facebook.com/v20.0/{conversation_id}/messages?access_token={access_token}'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
@@ -111,7 +111,7 @@ class MessageDetailResponse:
 
 def get_message_by_message_id(access_token: str, message_id: str) -> Optional[MessageDetailResponse]:
     logger.info(f"Starting to get message details for message id: {message_id}")
-    url = f'https://graph.facebook.com/v13.0/{message_id}?fields=message,from,to,attachments&access_token={access_token}'
+    url = f'https://graph.facebook.com/v20.0/{message_id}?fields=message,from,to,attachments&access_token={access_token}'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
@@ -141,7 +141,7 @@ class UserProfileResponse:
 
 def get_user_profile_by_id(access_token: str, user_id: str) -> Optional[UserProfileResponse]:
     logger.info(f"Starting to get user profile details for user id: {user_id}")
-    url = f'https://graph.facebook.com/v13.0/{user_id}?fields=first_name,last_name,profile_pic&access_token={access_token}'
+    url = f'https://graph.facebook.com/v20.0/{user_id}?fields=first_name,last_name,profile_pic&access_token={access_token}'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info("Successfully received response")
@@ -166,7 +166,7 @@ class SendMessageResponse:
 
 def send_message(access_token: str, recipient_id: str, message: str, tag: str) -> Optional[SendMessageResponse]:
     logger.info(f"Starting to send message to recipient id: {recipient_id}")
-    url = f'https://graph.facebook.com/v13.0/me/messages?access_token={access_token}'
+    url = f'https://graph.facebook.com/v20.0/me/messages?access_token={access_token}'
     headers = {
         'Content-Type': 'application/json',
     }
@@ -199,7 +199,7 @@ def send_template_message(user_id: str, template_content: dict, delay: int, acce
     import time
 
     logger.info(f"Starting to send template message to user id: {user_id}")
-    url = f'https://graph.facebook.com/v13.0/me/messages?access_token={access_token}'
+    url = f'https://graph.facebook.com/v20.0/me/messages?access_token={access_token}'
     headers = {
         'Content-Type': 'application/json',
     }
