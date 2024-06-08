@@ -118,3 +118,16 @@ def update_lead_last_message_at(lead: Lead, last_message_at: datetime) -> Lead:
     lead.save()
     logger.info(f"\"{lead}\" last message at has been updated.")
     return lead
+
+
+def patch_lead(lead: Lead, **kwargs) -> Lead:
+
+    for key, value in kwargs.items():
+        if hasattr(lead, key):
+            setattr(lead, key, value)
+
+    lead.updated_at = timezone.now()
+    lead.save()
+
+    logger.info(f"\"{lead}\" has been patched with the provided updates.")
+    return lead
